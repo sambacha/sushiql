@@ -1,0 +1,19 @@
+{
+  "name": "sushiql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "sam bacha",
+  "license": "ISC",
+  "devDependencies": {
+    "@genql/cli": "^2.6.0"
+  },
+  "dependencies": {
+    "@genql/runtime": "^2.6.0",
+    "graphql": "^15.5.3"
+  }
+}

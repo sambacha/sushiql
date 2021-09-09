@@ -1,0 +1,110 @@
+type Block {
+  """Block number"""
+  block_number: Int!
+
+  """The miner's address"""
+  miner: String!
+
+  """
+  The total ETH reward paid to the miner. This includes gas fees and coinbase transfers
+  """
+  miner_reward: String!
+
+  """The total ETH transferred directly to coinbase, not counting gas"""
+  coinbase_transfers: String!
+
+  """Total gas used by the bundle"""
+  gas_used: String!
+
+  """
+  The adjusted gas price of the bundle. This is not an actual gas price, but it is what's used by mev-geth to sort bundles. Found by doing: miner_reward/gas_used
+  """
+  gas_price: String!
+
+  """List of transactions"""
+  transactions: [Transaction]!
+}
+
+type Query {
+  """The latest block number that has been processed"""
+  latest_block_number: Int!
+
+  """
+  Returns the 100 most recent flashbots blocks. This also contains a list of transactions that were part of the flashbots bundle. Use query parameters to filter this down to blocks you're interested in.
+  """
+  blocks(
+    """Filter to a single miner address"""
+    miner: String
+
+    """Filter to get blocks including transactions sent by from"""
+    from: String
+
+    """
+    Filter blocks to before this block number (exclusive, does not include this block number)
+    """
+    before: String = "latest"
+
+    """
+    Number of blocks that are returned
+    Range between 1-10000
+    """
+    limit: Int = 100
+  ): [Block]!
+
+  """Returns just a single block equal to the given block_number"""
+  block(
+    """Number of the block to return"""
+    block_number: Int!
+  ): Block
+
+  """
+  Returns the 100 most recent flashbots transactions. Use the before query param to filter to transactions before a given block number.
+  """
+  transactions(
+    """
+    Filter transactions to before this block number (exclusive, does not include this block number)
+    """
+    before: String = "latest"
+
+    """
+    Number of transactions that are returned
+    Range between 1-10000
+    """
+    limit: Int = 100
+  ): [Transaction]!
+}
+
+type Transaction {
+  """transaction hash"""
+  transaction_hash: String!
+
+  """index of tx inside of bundle"""
+  tx_index: Int!
+
+  """index of bundle inside of the block"""
+  bundle_index: Int!
+
+  """block number"""
+  block_number: Int!
+
+  """address of the externally owned account that created this transaction"""
+  eoa_address: String!
+
+  """to address"""
+  to_address: String!
+
+  """gas used in this transaction"""
+  gas_used: Int!
+
+  """gas price of this transaction"""
+  gas_price: String!
+
+  """ETH directly transferred to the coinbase, not counting gas"""
+  coinbase_transfer: String!
+
+  """ETH transferred to the coinbase, including gas and direct transfers"""
+  total_miner_reward: String!
+
+  """Block which this transaction belongs to"""
+  block: Block!
+}
