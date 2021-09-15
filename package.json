@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@genql/runtime": "^2.6.0",
-    "graphql": "^15.5.3"
+    "graphql": "^15.5.3",
     "typescript": "*",
      "ts-node-dev": "*"
   }
