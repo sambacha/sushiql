@@ -1,0 +1,824 @@
+directive @entity on OBJECT
+
+directive @derivedFrom(field: String) on FIELD_DEFINITION
+
+directive @subgraphId(id: String) on OBJECT
+
+type Bar {
+  id: ID!
+  decimals: Int!
+  name: String!
+  sushi: Bytes!
+  symbol: String!
+  totalSupply: BigDecimal!
+  ratio: BigDecimal!
+  xSushiMinted: BigDecimal!
+  xSushiBurned: BigDecimal!
+  sushiStaked: BigDecimal!
+  sushiStakedUSD: BigDecimal!
+  sushiHarvested: BigDecimal!
+  sushiHarvestedUSD: BigDecimal!
+  xSushiAge: BigDecimal!
+  xSushiAgeDestroyed: BigDecimal!
+  users(skip: Int = 0, first: Int = 100, orderBy: User_orderBy, orderDirection: OrderDirection, where: User_filter): [User!]!
+  updatedAt: BigInt!
+}
+
+input Bar_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  decimals: Int
+  decimals_not: Int
+  decimals_gt: Int
+  decimals_lt: Int
+  decimals_gte: Int
+  decimals_lte: Int
+  decimals_in: [Int!]
+  decimals_not_in: [Int!]
+  name: String
+  name_not: String
+  name_gt: String
+  name_lt: String
+  name_gte: String
+  name_lte: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  sushi: Bytes
+  sushi_not: Bytes
+  sushi_in: [Bytes!]
+  sushi_not_in: [Bytes!]
+  sushi_contains: Bytes
+  sushi_not_contains: Bytes
+  symbol: String
+  symbol_not: String
+  symbol_gt: String
+  symbol_lt: String
+  symbol_gte: String
+  symbol_lte: String
+  symbol_in: [String!]
+  symbol_not_in: [String!]
+  symbol_contains: String
+  symbol_not_contains: String
+  symbol_starts_with: String
+  symbol_not_starts_with: String
+  symbol_ends_with: String
+  symbol_not_ends_with: String
+  totalSupply: BigDecimal
+  totalSupply_not: BigDecimal
+  totalSupply_gt: BigDecimal
+  totalSupply_lt: BigDecimal
+  totalSupply_gte: BigDecimal
+  totalSupply_lte: BigDecimal
+  totalSupply_in: [BigDecimal!]
+  totalSupply_not_in: [BigDecimal!]
+  ratio: BigDecimal
+  ratio_not: BigDecimal
+  ratio_gt: BigDecimal
+  ratio_lt: BigDecimal
+  ratio_gte: BigDecimal
+  ratio_lte: BigDecimal
+  ratio_in: [BigDecimal!]
+  ratio_not_in: [BigDecimal!]
+  xSushiMinted: BigDecimal
+  xSushiMinted_not: BigDecimal
+  xSushiMinted_gt: BigDecimal
+  xSushiMinted_lt: BigDecimal
+  xSushiMinted_gte: BigDecimal
+  xSushiMinted_lte: BigDecimal
+  xSushiMinted_in: [BigDecimal!]
+  xSushiMinted_not_in: [BigDecimal!]
+  xSushiBurned: BigDecimal
+  xSushiBurned_not: BigDecimal
+  xSushiBurned_gt: BigDecimal
+  xSushiBurned_lt: BigDecimal
+  xSushiBurned_gte: BigDecimal
+  xSushiBurned_lte: BigDecimal
+  xSushiBurned_in: [BigDecimal!]
+  xSushiBurned_not_in: [BigDecimal!]
+  sushiStaked: BigDecimal
+  sushiStaked_not: BigDecimal
+  sushiStaked_gt: BigDecimal
+  sushiStaked_lt: BigDecimal
+  sushiStaked_gte: BigDecimal
+  sushiStaked_lte: BigDecimal
+  sushiStaked_in: [BigDecimal!]
+  sushiStaked_not_in: [BigDecimal!]
+  sushiStakedUSD: BigDecimal
+  sushiStakedUSD_not: BigDecimal
+  sushiStakedUSD_gt: BigDecimal
+  sushiStakedUSD_lt: BigDecimal
+  sushiStakedUSD_gte: BigDecimal
+  sushiStakedUSD_lte: BigDecimal
+  sushiStakedUSD_in: [BigDecimal!]
+  sushiStakedUSD_not_in: [BigDecimal!]
+  sushiHarvested: BigDecimal
+  sushiHarvested_not: BigDecimal
+  sushiHarvested_gt: BigDecimal
+  sushiHarvested_lt: BigDecimal
+  sushiHarvested_gte: BigDecimal
+  sushiHarvested_lte: BigDecimal
+  sushiHarvested_in: [BigDecimal!]
+  sushiHarvested_not_in: [BigDecimal!]
+  sushiHarvestedUSD: BigDecimal
+  sushiHarvestedUSD_not: BigDecimal
+  sushiHarvestedUSD_gt: BigDecimal
+  sushiHarvestedUSD_lt: BigDecimal
+  sushiHarvestedUSD_gte: BigDecimal
+  sushiHarvestedUSD_lte: BigDecimal
+  sushiHarvestedUSD_in: [BigDecimal!]
+  sushiHarvestedUSD_not_in: [BigDecimal!]
+  xSushiAge: BigDecimal
+  xSushiAge_not: BigDecimal
+  xSushiAge_gt: BigDecimal
+  xSushiAge_lt: BigDecimal
+  xSushiAge_gte: BigDecimal
+  xSushiAge_lte: BigDecimal
+  xSushiAge_in: [BigDecimal!]
+  xSushiAge_not_in: [BigDecimal!]
+  xSushiAgeDestroyed: BigDecimal
+  xSushiAgeDestroyed_not: BigDecimal
+  xSushiAgeDestroyed_gt: BigDecimal
+  xSushiAgeDestroyed_lt: BigDecimal
+  xSushiAgeDestroyed_gte: BigDecimal
+  xSushiAgeDestroyed_lte: BigDecimal
+  xSushiAgeDestroyed_in: [BigDecimal!]
+  xSushiAgeDestroyed_not_in: [BigDecimal!]
+  updatedAt: BigInt
+  updatedAt_not: BigInt
+  updatedAt_gt: BigInt
+  updatedAt_lt: BigInt
+  updatedAt_gte: BigInt
+  updatedAt_lte: BigInt
+  updatedAt_in: [BigInt!]
+  updatedAt_not_in: [BigInt!]
+}
+
+enum Bar_orderBy {
+  id
+  decimals
+  name
+  sushi
+  symbol
+  totalSupply
+  ratio
+  xSushiMinted
+  xSushiBurned
+  sushiStaked
+  sushiStakedUSD
+  sushiHarvested
+  sushiHarvestedUSD
+  xSushiAge
+  xSushiAgeDestroyed
+  users
+  updatedAt
+}
+
+scalar BigDecimal
+
+scalar BigInt
+
+input Block_height {
+  hash: Bytes
+  number: Int
+}
+
+scalar Bytes
+
+type History {
+  id: ID!
+  date: Int!
+  timeframe: Timeframe!
+  sushiStaked: BigDecimal!
+  sushiStakedUSD: BigDecimal!
+  sushiHarvested: BigDecimal!
+  sushiHarvestedUSD: BigDecimal!
+  xSushiAge: BigDecimal!
+  xSushiAgeDestroyed: BigDecimal!
+  xSushiMinted: BigDecimal!
+  xSushiBurned: BigDecimal!
+  xSushiSupply: BigDecimal!
+  ratio: BigDecimal!
+}
+
+input History_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  date: Int
+  date_not: Int
+  date_gt: Int
+  date_lt: Int
+  date_gte: Int
+  date_lte: Int
+  date_in: [Int!]
+  date_not_in: [Int!]
+  timeframe: Timeframe
+  timeframe_not: Timeframe
+  timeframe_in: [Timeframe!]
+  timeframe_not_in: [Timeframe!]
+  sushiStaked: BigDecimal
+  sushiStaked_not: BigDecimal
+  sushiStaked_gt: BigDecimal
+  sushiStaked_lt: BigDecimal
+  sushiStaked_gte: BigDecimal
+  sushiStaked_lte: BigDecimal
+  sushiStaked_in: [BigDecimal!]
+  sushiStaked_not_in: [BigDecimal!]
+  sushiStakedUSD: BigDecimal
+  sushiStakedUSD_not: BigDecimal
+  sushiStakedUSD_gt: BigDecimal
+  sushiStakedUSD_lt: BigDecimal
+  sushiStakedUSD_gte: BigDecimal
+  sushiStakedUSD_lte: BigDecimal
+  sushiStakedUSD_in: [BigDecimal!]
+  sushiStakedUSD_not_in: [BigDecimal!]
+  sushiHarvested: BigDecimal
+  sushiHarvested_not: BigDecimal
+  sushiHarvested_gt: BigDecimal
+  sushiHarvested_lt: BigDecimal
+  sushiHarvested_gte: BigDecimal
+  sushiHarvested_lte: BigDecimal
+  sushiHarvested_in: [BigDecimal!]
+  sushiHarvested_not_in: [BigDecimal!]
+  sushiHarvestedUSD: BigDecimal
+  sushiHarvestedUSD_not: BigDecimal
+  sushiHarvestedUSD_gt: BigDecimal
+  sushiHarvestedUSD_lt: BigDecimal
+  sushiHarvestedUSD_gte: BigDecimal
+  sushiHarvestedUSD_lte: BigDecimal
+  sushiHarvestedUSD_in: [BigDecimal!]
+  sushiHarvestedUSD_not_in: [BigDecimal!]
+  xSushiAge: BigDecimal
+  xSushiAge_not: BigDecimal
+  xSushiAge_gt: BigDecimal
+  xSushiAge_lt: BigDecimal
+  xSushiAge_gte: BigDecimal
+  xSushiAge_lte: BigDecimal
+  xSushiAge_in: [BigDecimal!]
+  xSushiAge_not_in: [BigDecimal!]
+  xSushiAgeDestroyed: BigDecimal
+  xSushiAgeDestroyed_not: BigDecimal
+  xSushiAgeDestroyed_gt: BigDecimal
+  xSushiAgeDestroyed_lt: BigDecimal
+  xSushiAgeDestroyed_gte: BigDecimal
+  xSushiAgeDestroyed_lte: BigDecimal
+  xSushiAgeDestroyed_in: [BigDecimal!]
+  xSushiAgeDestroyed_not_in: [BigDecimal!]
+  xSushiMinted: BigDecimal
+  xSushiMinted_not: BigDecimal
+  xSushiMinted_gt: BigDecimal
+  xSushiMinted_lt: BigDecimal
+  xSushiMinted_gte: BigDecimal
+  xSushiMinted_lte: BigDecimal
+  xSushiMinted_in: [BigDecimal!]
+  xSushiMinted_not_in: [BigDecimal!]
+  xSushiBurned: BigDecimal
+  xSushiBurned_not: BigDecimal
+  xSushiBurned_gt: BigDecimal
+  xSushiBurned_lt: BigDecimal
+  xSushiBurned_gte: BigDecimal
+  xSushiBurned_lte: BigDecimal
+  xSushiBurned_in: [BigDecimal!]
+  xSushiBurned_not_in: [BigDecimal!]
+  xSushiSupply: BigDecimal
+  xSushiSupply_not: BigDecimal
+  xSushiSupply_gt: BigDecimal
+  xSushiSupply_lt: BigDecimal
+  xSushiSupply_gte: BigDecimal
+  xSushiSupply_lte: BigDecimal
+  xSushiSupply_in: [BigDecimal!]
+  xSushiSupply_not_in: [BigDecimal!]
+  ratio: BigDecimal
+  ratio_not: BigDecimal
+  ratio_gt: BigDecimal
+  ratio_lt: BigDecimal
+  ratio_gte: BigDecimal
+  ratio_lte: BigDecimal
+  ratio_in: [BigDecimal!]
+  ratio_not_in: [BigDecimal!]
+}
+
+enum History_orderBy {
+  id
+  date
+  timeframe
+  sushiStaked
+  sushiStakedUSD
+  sushiHarvested
+  sushiHarvestedUSD
+  xSushiAge
+  xSushiAgeDestroyed
+  xSushiMinted
+  xSushiBurned
+  xSushiSupply
+  ratio
+}
+
+enum OrderDirection {
+  asc
+  desc
+}
+
+type Query {
+  bar(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Bar
+  bars(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Bar_orderBy
+    orderDirection: OrderDirection
+    where: Bar_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Bar!]!
+  user(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): User
+  users(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: User_orderBy
+    orderDirection: OrderDirection
+    where: User_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [User!]!
+  history(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): History
+  histories(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: History_orderBy
+    orderDirection: OrderDirection
+    where: History_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [History!]!
+
+  """Access to subgraph metadata"""
+  _meta(block: Block_height): _Meta_
+}
+
+type Subscription {
+  bar(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Bar
+  bars(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Bar_orderBy
+    orderDirection: OrderDirection
+    where: Bar_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Bar!]!
+  user(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): User
+  users(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: User_orderBy
+    orderDirection: OrderDirection
+    where: User_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [User!]!
+  history(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): History
+  histories(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: History_orderBy
+    orderDirection: OrderDirection
+    where: History_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [History!]!
+
+  """Access to subgraph metadata"""
+  _meta(block: Block_height): _Meta_
+}
+
+enum Timeframe {
+  Day
+}
+
+type User {
+  id: ID!
+  bar: Bar
+  xSushi: BigDecimal!
+  xSushiIn: BigDecimal!
+  xSushiOut: BigDecimal!
+  xSushiMinted: BigDecimal!
+  xSushiBurned: BigDecimal!
+  xSushiOffset: BigDecimal!
+  xSushiAge: BigDecimal!
+  xSushiAgeDestroyed: BigDecimal!
+  sushiStaked: BigDecimal!
+  sushiStakedUSD: BigDecimal!
+  sushiHarvested: BigDecimal!
+  sushiHarvestedUSD: BigDecimal!
+  sushiOut: BigDecimal!
+  sushiIn: BigDecimal!
+  usdOut: BigDecimal!
+  usdIn: BigDecimal!
+  sushiOffset: BigDecimal!
+  usdOffset: BigDecimal!
+  createdAt: BigInt!
+  createdAtBlock: BigInt!
+  updatedAt: BigInt!
+  updatedAtBlock: BigInt!
+}
+
+input User_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  bar: String
+  bar_not: String
+  bar_gt: String
+  bar_lt: String
+  bar_gte: String
+  bar_lte: String
+  bar_in: [String!]
+  bar_not_in: [String!]
+  bar_contains: String
+  bar_not_contains: String
+  bar_starts_with: String
+  bar_not_starts_with: String
+  bar_ends_with: String
+  bar_not_ends_with: String
+  xSushi: BigDecimal
+  xSushi_not: BigDecimal
+  xSushi_gt: BigDecimal
+  xSushi_lt: BigDecimal
+  xSushi_gte: BigDecimal
+  xSushi_lte: BigDecimal
+  xSushi_in: [BigDecimal!]
+  xSushi_not_in: [BigDecimal!]
+  xSushiIn: BigDecimal
+  xSushiIn_not: BigDecimal
+  xSushiIn_gt: BigDecimal
+  xSushiIn_lt: BigDecimal
+  xSushiIn_gte: BigDecimal
+  xSushiIn_lte: BigDecimal
+  xSushiIn_in: [BigDecimal!]
+  xSushiIn_not_in: [BigDecimal!]
+  xSushiOut: BigDecimal
+  xSushiOut_not: BigDecimal
+  xSushiOut_gt: BigDecimal
+  xSushiOut_lt: BigDecimal
+  xSushiOut_gte: BigDecimal
+  xSushiOut_lte: BigDecimal
+  xSushiOut_in: [BigDecimal!]
+  xSushiOut_not_in: [BigDecimal!]
+  xSushiMinted: BigDecimal
+  xSushiMinted_not: BigDecimal
+  xSushiMinted_gt: BigDecimal
+  xSushiMinted_lt: BigDecimal
+  xSushiMinted_gte: BigDecimal
+  xSushiMinted_lte: BigDecimal
+  xSushiMinted_in: [BigDecimal!]
+  xSushiMinted_not_in: [BigDecimal!]
+  xSushiBurned: BigDecimal
+  xSushiBurned_not: BigDecimal
+  xSushiBurned_gt: BigDecimal
+  xSushiBurned_lt: BigDecimal
+  xSushiBurned_gte: BigDecimal
+  xSushiBurned_lte: BigDecimal
+  xSushiBurned_in: [BigDecimal!]
+  xSushiBurned_not_in: [BigDecimal!]
+  xSushiOffset: BigDecimal
+  xSushiOffset_not: BigDecimal
+  xSushiOffset_gt: BigDecimal
+  xSushiOffset_lt: BigDecimal
+  xSushiOffset_gte: BigDecimal
+  xSushiOffset_lte: BigDecimal
+  xSushiOffset_in: [BigDecimal!]
+  xSushiOffset_not_in: [BigDecimal!]
+  xSushiAge: BigDecimal
+  xSushiAge_not: BigDecimal
+  xSushiAge_gt: BigDecimal
+  xSushiAge_lt: BigDecimal
+  xSushiAge_gte: BigDecimal
+  xSushiAge_lte: BigDecimal
+  xSushiAge_in: [BigDecimal!]
+  xSushiAge_not_in: [BigDecimal!]
+  xSushiAgeDestroyed: BigDecimal
+  xSushiAgeDestroyed_not: BigDecimal
+  xSushiAgeDestroyed_gt: BigDecimal
+  xSushiAgeDestroyed_lt: BigDecimal
+  xSushiAgeDestroyed_gte: BigDecimal
+  xSushiAgeDestroyed_lte: BigDecimal
+  xSushiAgeDestroyed_in: [BigDecimal!]
+  xSushiAgeDestroyed_not_in: [BigDecimal!]
+  sushiStaked: BigDecimal
+  sushiStaked_not: BigDecimal
+  sushiStaked_gt: BigDecimal
+  sushiStaked_lt: BigDecimal
+  sushiStaked_gte: BigDecimal
+  sushiStaked_lte: BigDecimal
+  sushiStaked_in: [BigDecimal!]
+  sushiStaked_not_in: [BigDecimal!]
+  sushiStakedUSD: BigDecimal
+  sushiStakedUSD_not: BigDecimal
+  sushiStakedUSD_gt: BigDecimal
+  sushiStakedUSD_lt: BigDecimal
+  sushiStakedUSD_gte: BigDecimal
+  sushiStakedUSD_lte: BigDecimal
+  sushiStakedUSD_in: [BigDecimal!]
+  sushiStakedUSD_not_in: [BigDecimal!]
+  sushiHarvested: BigDecimal
+  sushiHarvested_not: BigDecimal
+  sushiHarvested_gt: BigDecimal
+  sushiHarvested_lt: BigDecimal
+  sushiHarvested_gte: BigDecimal
+  sushiHarvested_lte: BigDecimal
+  sushiHarvested_in: [BigDecimal!]
+  sushiHarvested_not_in: [BigDecimal!]
+  sushiHarvestedUSD: BigDecimal
+  sushiHarvestedUSD_not: BigDecimal
+  sushiHarvestedUSD_gt: BigDecimal
+  sushiHarvestedUSD_lt: BigDecimal
+  sushiHarvestedUSD_gte: BigDecimal
+  sushiHarvestedUSD_lte: BigDecimal
+  sushiHarvestedUSD_in: [BigDecimal!]
+  sushiHarvestedUSD_not_in: [BigDecimal!]
+  sushiOut: BigDecimal
+  sushiOut_not: BigDecimal
+  sushiOut_gt: BigDecimal
+  sushiOut_lt: BigDecimal
+  sushiOut_gte: BigDecimal
+  sushiOut_lte: BigDecimal
+  sushiOut_in: [BigDecimal!]
+  sushiOut_not_in: [BigDecimal!]
+  sushiIn: BigDecimal
+  sushiIn_not: BigDecimal
+  sushiIn_gt: BigDecimal
+  sushiIn_lt: BigDecimal
+  sushiIn_gte: BigDecimal
+  sushiIn_lte: BigDecimal
+  sushiIn_in: [BigDecimal!]
+  sushiIn_not_in: [BigDecimal!]
+  usdOut: BigDecimal
+  usdOut_not: BigDecimal
+  usdOut_gt: BigDecimal
+  usdOut_lt: BigDecimal
+  usdOut_gte: BigDecimal
+  usdOut_lte: BigDecimal
+  usdOut_in: [BigDecimal!]
+  usdOut_not_in: [BigDecimal!]
+  usdIn: BigDecimal
+  usdIn_not: BigDecimal
+  usdIn_gt: BigDecimal
+  usdIn_lt: BigDecimal
+  usdIn_gte: BigDecimal
+  usdIn_lte: BigDecimal
+  usdIn_in: [BigDecimal!]
+  usdIn_not_in: [BigDecimal!]
+  sushiOffset: BigDecimal
+  sushiOffset_not: BigDecimal
+  sushiOffset_gt: BigDecimal
+  sushiOffset_lt: BigDecimal
+  sushiOffset_gte: BigDecimal
+  sushiOffset_lte: BigDecimal
+  sushiOffset_in: [BigDecimal!]
+  sushiOffset_not_in: [BigDecimal!]
+  usdOffset: BigDecimal
+  usdOffset_not: BigDecimal
+  usdOffset_gt: BigDecimal
+  usdOffset_lt: BigDecimal
+  usdOffset_gte: BigDecimal
+  usdOffset_lte: BigDecimal
+  usdOffset_in: [BigDecimal!]
+  usdOffset_not_in: [BigDecimal!]
+  createdAt: BigInt
+  createdAt_not: BigInt
+  createdAt_gt: BigInt
+  createdAt_lt: BigInt
+  createdAt_gte: BigInt
+  createdAt_lte: BigInt
+  createdAt_in: [BigInt!]
+  createdAt_not_in: [BigInt!]
+  createdAtBlock: BigInt
+  createdAtBlock_not: BigInt
+  createdAtBlock_gt: BigInt
+  createdAtBlock_lt: BigInt
+  createdAtBlock_gte: BigInt
+  createdAtBlock_lte: BigInt
+  createdAtBlock_in: [BigInt!]
+  createdAtBlock_not_in: [BigInt!]
+  updatedAt: BigInt
+  updatedAt_not: BigInt
+  updatedAt_gt: BigInt
+  updatedAt_lt: BigInt
+  updatedAt_gte: BigInt
+  updatedAt_lte: BigInt
+  updatedAt_in: [BigInt!]
+  updatedAt_not_in: [BigInt!]
+  updatedAtBlock: BigInt
+  updatedAtBlock_not: BigInt
+  updatedAtBlock_gt: BigInt
+  updatedAtBlock_lt: BigInt
+  updatedAtBlock_gte: BigInt
+  updatedAtBlock_lte: BigInt
+  updatedAtBlock_in: [BigInt!]
+  updatedAtBlock_not_in: [BigInt!]
+}
+
+enum User_orderBy {
+  id
+  bar
+  xSushi
+  xSushiIn
+  xSushiOut
+  xSushiMinted
+  xSushiBurned
+  xSushiOffset
+  xSushiAge
+  xSushiAgeDestroyed
+  sushiStaked
+  sushiStakedUSD
+  sushiHarvested
+  sushiHarvestedUSD
+  sushiOut
+  sushiIn
+  usdOut
+  usdIn
+  sushiOffset
+  usdOffset
+  createdAt
+  createdAtBlock
+  updatedAt
+  updatedAtBlock
+}
+
+type _Block_ {
+  """The hash of the block"""
+  hash: Bytes
+
+  """The block number"""
+  number: Int!
+}
+
+"""The type for the top-level _meta field"""
+type _Meta_ {
+  """
+  Information about a specific subgraph block. The hash of the block
+  will be null if the _meta field has a block constraint that asks for
+  a block number. It will be filled if the _meta field has no block constraint
+  and therefore asks for the latest  block
+  
+  """
+  block: _Block_!
+
+  """The deployment ID"""
+  deployment: String!
+
+  """If `true`, the subgraph encountered indexing errors at some past block"""
+  hasIndexingErrors: Boolean!
+}
+
+enum _SubgraphErrorPolicy_ {
+  """Data will be returned even if the subgraph has indexing errors"""
+  allow
+
+  """
+  If the subgraph has indexing errors, data will be omitted. The default.
+  """
+  deny
+}
