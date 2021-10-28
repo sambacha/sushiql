@@ -231,6 +231,8 @@ input History_filter {
   date_not_in: [Int!]
   timeframe: Timeframe
   timeframe_not: Timeframe
+  timeframe_in: [Timeframe!]
+  timeframe_not_in: [Timeframe!]
   sushiStaked: BigDecimal
   sushiStaked_not: BigDecimal
   sushiStaked_gt: BigDecimal
@@ -342,6 +344,11 @@ type Query {
     The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
   ): Bar
   bars(
     skip: Int = 0
@@ -354,6 +361,11 @@ type Query {
     The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
   ): [Bar!]!
   user(
     id: ID!
@@ -362,6 +374,11 @@ type Query {
     The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
   ): User
   users(
     skip: Int = 0
@@ -374,6 +391,11 @@ type Query {
     The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
   ): [User!]!
   history(
     id: ID!
@@ -382,6 +404,11 @@ type Query {
     The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
   ): History
   histories(
     skip: Int = 0
@@ -394,6 +421,11 @@ type Query {
     The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
   ): [History!]!
 
   """Access to subgraph metadata"""
@@ -408,6 +440,11 @@ type Subscription {
     The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
   ): Bar
   bars(
     skip: Int = 0
@@ -420,6 +457,11 @@ type Subscription {
     The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
   ): [Bar!]!
   user(
     id: ID!
@@ -428,6 +470,11 @@ type Subscription {
     The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
   ): User
   users(
     skip: Int = 0
@@ -440,6 +487,11 @@ type Subscription {
     The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
   ): [User!]!
   history(
     id: ID!
@@ -448,6 +500,11 @@ type Subscription {
     The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
   ): History
   histories(
     skip: Int = 0
@@ -460,6 +517,11 @@ type Subscription {
     The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
   ): [History!]!
 
   """Access to subgraph metadata"""
@@ -489,9 +551,12 @@ type User {
   sushiIn: BigDecimal!
   usdOut: BigDecimal!
   usdIn: BigDecimal!
-  updatedAt: BigInt!
   sushiOffset: BigDecimal!
   usdOffset: BigDecimal!
+  createdAt: BigInt!
+  createdAtBlock: BigInt!
+  updatedAt: BigInt!
+  updatedAtBlock: BigInt!
 }
 
 input User_filter {
@@ -645,14 +710,6 @@ input User_filter {
   usdIn_lte: BigDecimal
   usdIn_in: [BigDecimal!]
   usdIn_not_in: [BigDecimal!]
-  updatedAt: BigInt
-  updatedAt_not: BigInt
-  updatedAt_gt: BigInt
-  updatedAt_lt: BigInt
-  updatedAt_gte: BigInt
-  updatedAt_lte: BigInt
-  updatedAt_in: [BigInt!]
-  updatedAt_not_in: [BigInt!]
   sushiOffset: BigDecimal
   sushiOffset_not: BigDecimal
   sushiOffset_gt: BigDecimal
@@ -669,6 +726,38 @@ input User_filter {
   usdOffset_lte: BigDecimal
   usdOffset_in: [BigDecimal!]
   usdOffset_not_in: [BigDecimal!]
+  createdAt: BigInt
+  createdAt_not: BigInt
+  createdAt_gt: BigInt
+  createdAt_lt: BigInt
+  createdAt_gte: BigInt
+  createdAt_lte: BigInt
+  createdAt_in: [BigInt!]
+  createdAt_not_in: [BigInt!]
+  createdAtBlock: BigInt
+  createdAtBlock_not: BigInt
+  createdAtBlock_gt: BigInt
+  createdAtBlock_lt: BigInt
+  createdAtBlock_gte: BigInt
+  createdAtBlock_lte: BigInt
+  createdAtBlock_in: [BigInt!]
+  createdAtBlock_not_in: [BigInt!]
+  updatedAt: BigInt
+  updatedAt_not: BigInt
+  updatedAt_gt: BigInt
+  updatedAt_lt: BigInt
+  updatedAt_gte: BigInt
+  updatedAt_lte: BigInt
+  updatedAt_in: [BigInt!]
+  updatedAt_not_in: [BigInt!]
+  updatedAtBlock: BigInt
+  updatedAtBlock_not: BigInt
+  updatedAtBlock_gt: BigInt
+  updatedAtBlock_lt: BigInt
+  updatedAtBlock_gte: BigInt
+  updatedAtBlock_lte: BigInt
+  updatedAtBlock_in: [BigInt!]
+  updatedAtBlock_not_in: [BigInt!]
 }
 
 enum User_orderBy {
@@ -690,9 +779,12 @@ enum User_orderBy {
   sushiIn
   usdOut
   usdIn
-  updatedAt
   sushiOffset
   usdOffset
+  createdAt
+  createdAtBlock
+  updatedAt
+  updatedAtBlock
 }
 
 type _Block_ {

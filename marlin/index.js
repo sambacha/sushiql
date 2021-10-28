@@ -14,7 +14,7 @@ module.exports.version = version
 module.exports.createClient = function(options) {
   options = options || {}
   var optionsCopy = {
-    url: 'https://api.thegraph.com/subgraphs/name/matthewlilley/bar',
+    url: 'https://api.thegraph.com/subgraphs/name/marlinprotocol/mev-bor',
     queryRoot: typeMap.Query,
     mutationRoot: typeMap.Mutation,
     subscriptionRoot: typeMap.Subscription,

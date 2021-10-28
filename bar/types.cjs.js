@@ -622,6 +622,12 @@ module.exports = {
             "timeframe_not": [
                 17
             ],
+            "timeframe_in": [
+                17
+            ],
+            "timeframe_not_in": [
+                17
+            ],
             "sushiStaked": [
                 3
             ],
@@ -880,6 +886,10 @@ module.exports = {
                     ],
                     "block": [
                         5
+                    ],
+                    "subgraphError": [
+                        23,
+                        "_SubgraphErrorPolicy_!"
                     ]
                 }
             ],
@@ -903,6 +913,10 @@ module.exports = {
                     ],
                     "block": [
                         5
+                    ],
+                    "subgraphError": [
+                        23,
+                        "_SubgraphErrorPolicy_!"
                     ]
                 }
             ],
@@ -915,6 +929,10 @@ module.exports = {
                     ],
                     "block": [
                         5
+                    ],
+                    "subgraphError": [
+                        23,
+                        "_SubgraphErrorPolicy_!"
                     ]
                 }
             ],
@@ -938,6 +956,10 @@ module.exports = {
                     ],
                     "block": [
                         5
+                    ],
+                    "subgraphError": [
+                        23,
+                        "_SubgraphErrorPolicy_!"
                     ]
                 }
             ],
@@ -950,6 +972,10 @@ module.exports = {
                     ],
                     "block": [
                         5
+                    ],
+                    "subgraphError": [
+                        23,
+                        "_SubgraphErrorPolicy_!"
                     ]
                 }
             ],
@@ -973,6 +999,10 @@ module.exports = {
                     ],
                     "block": [
                         5
+                    ],
+                    "subgraphError": [
+                        23,
+                        "_SubgraphErrorPolicy_!"
                     ]
                 }
             ],
@@ -999,6 +1029,10 @@ module.exports = {
                     ],
                     "block": [
                         5
+                    ],
+                    "subgraphError": [
+                        23,
+                        "_SubgraphErrorPolicy_!"
                     ]
                 }
             ],
@@ -1022,6 +1056,10 @@ module.exports = {
                     ],
                     "block": [
                         5
+                    ],
+                    "subgraphError": [
+                        23,
+                        "_SubgraphErrorPolicy_!"
                     ]
                 }
             ],
@@ -1034,6 +1072,10 @@ module.exports = {
                     ],
                     "block": [
                         5
+                    ],
+                    "subgraphError": [
+                        23,
+                        "_SubgraphErrorPolicy_!"
                     ]
                 }
             ],
@@ -1057,6 +1099,10 @@ module.exports = {
                     ],
                     "block": [
                         5
+                    ],
+                    "subgraphError": [
+                        23,
+                        "_SubgraphErrorPolicy_!"
                     ]
                 }
             ],
@@ -1069,6 +1115,10 @@ module.exports = {
                     ],
                     "block": [
                         5
+                    ],
+                    "subgraphError": [
+                        23,
+                        "_SubgraphErrorPolicy_!"
                     ]
                 }
             ],
@@ -1092,6 +1142,10 @@ module.exports = {
                     ],
                     "block": [
                         5
+                    ],
+                    "subgraphError": [
+                        23,
+                        "_SubgraphErrorPolicy_!"
                     ]
                 }
             ],
@@ -1163,14 +1217,23 @@ module.exports = {
             "usdIn": [
                 3
             ],
-            "updatedAt": [
-                4
-            ],
             "sushiOffset": [
                 3
             ],
             "usdOffset": [
                 3
+            ],
+            "createdAt": [
+                4
+            ],
+            "createdAtBlock": [
+                4
+            ],
+            "updatedAt": [
+                4
+            ],
+            "updatedAtBlock": [
+                4
             ],
             "__typename": [
                 15
@@ -1627,30 +1690,6 @@ module.exports = {
             "usdIn_not_in": [
                 3
             ],
-            "updatedAt": [
-                4
-            ],
-            "updatedAt_not": [
-                4
-            ],
-            "updatedAt_gt": [
-                4
-            ],
-            "updatedAt_lt": [
-                4
-            ],
-            "updatedAt_gte": [
-                4
-            ],
-            "updatedAt_lte": [
-                4
-            ],
-            "updatedAt_in": [
-                4
-            ],
-            "updatedAt_not_in": [
-                4
-            ],
             "sushiOffset": [
                 3
             ],
@@ -1698,6 +1737,102 @@ module.exports = {
             ],
             "usdOffset_not_in": [
                 3
+            ],
+            "createdAt": [
+                4
+            ],
+            "createdAt_not": [
+                4
+            ],
+            "createdAt_gt": [
+                4
+            ],
+            "createdAt_lt": [
+                4
+            ],
+            "createdAt_gte": [
+                4
+            ],
+            "createdAt_lte": [
+                4
+            ],
+            "createdAt_in": [
+                4
+            ],
+            "createdAt_not_in": [
+                4
+            ],
+            "createdAtBlock": [
+                4
+            ],
+            "createdAtBlock_not": [
+                4
+            ],
+            "createdAtBlock_gt": [
+                4
+            ],
+            "createdAtBlock_lt": [
+                4
+            ],
+            "createdAtBlock_gte": [
+                4
+            ],
+            "createdAtBlock_lte": [
+                4
+            ],
+            "createdAtBlock_in": [
+                4
+            ],
+            "createdAtBlock_not_in": [
+                4
+            ],
+            "updatedAt": [
+                4
+            ],
+            "updatedAt_not": [
+                4
+            ],
+            "updatedAt_gt": [
+                4
+            ],
+            "updatedAt_lt": [
+                4
+            ],
+            "updatedAt_gte": [
+                4
+            ],
+            "updatedAt_lte": [
+                4
+            ],
+            "updatedAt_in": [
+                4
+            ],
+            "updatedAt_not_in": [
+                4
+            ],
+            "updatedAtBlock": [
+                4
+            ],
+            "updatedAtBlock_not": [
+                4
+            ],
+            "updatedAtBlock_gt": [
+                4
+            ],
+            "updatedAtBlock_lt": [
+                4
+            ],
+            "updatedAtBlock_gte": [
+                4
+            ],
+            "updatedAtBlock_lte": [
+                4
+            ],
+            "updatedAtBlock_in": [
+                4
+            ],
+            "updatedAtBlock_not_in": [
+                4
             ],
             "__typename": [
                 15
