@@ -1,0 +1,3553 @@
+directive @entity on OBJECT
+
+directive @derivedFrom(field: String) on FIELD_DEFINITION
+
+directive @subgraphId(id: String) on OBJECT
+
+type Account {
+  """Account address"""
+  id: ID!
+
+  """Vault deposits"""
+  deposits(skip: Int = 0, first: Int = 100, orderBy: Deposit_orderBy, orderDirection: OrderDirection, where: Deposit_filter): [Deposit!]!
+
+  """Vault withdrawals"""
+  withdrawals(skip: Int = 0, first: Int = 100, orderBy: Withdrawal_orderBy, orderDirection: OrderDirection, where: Withdrawal_filter): [Withdrawal!]!
+
+  """Vault positions"""
+  vaultPositions(skip: Int = 0, first: Int = 100, orderBy: AccountVaultPosition_orderBy, orderDirection: OrderDirection, where: AccountVaultPosition_filter): [AccountVaultPosition!]!
+
+  """Incoming share transfers"""
+  sharesReceived(skip: Int = 0, first: Int = 100, orderBy: Transfer_orderBy, orderDirection: OrderDirection, where: Transfer_filter): [Transfer!]!
+
+  """Outgoing share transfers"""
+  sharesSent(skip: Int = 0, first: Int = 100, orderBy: Transfer_orderBy, orderDirection: OrderDirection, where: Transfer_filter): [Transfer!]!
+}
+
+type AccountVaultPosition {
+  """Account-Vault"""
+  id: ID!
+
+  """Vault"""
+  vault: Vault!
+
+  """Account"""
+  account: Account!
+
+  """Vault token"""
+  token: Token!
+
+  """Vault share token"""
+  shareToken: Token!
+
+  """Created in transaction"""
+  transaction: Transaction!
+
+  """Latest account update for this Vault"""
+  latestUpdate: AccountVaultPositionUpdate!
+
+  """Account updates over time"""
+  updates(skip: Int = 0, first: Int = 100, orderBy: AccountVaultPositionUpdate_orderBy, orderDirection: OrderDirection, where: AccountVaultPositionUpdate_filter): [AccountVaultPositionUpdate!]!
+
+  """Share balance"""
+  balanceShares: BigInt!
+
+  """
+  The current balance of tokens defined as: sum(deposits) - sum(withdrawals) + sum(received transfers) - sum(sent transfers).
+  """
+  balanceTokens: BigInt!
+
+  """
+  The current balance position defined as: (vault.balanceOf(account) * (vault.pricePerShare() / 10**vault.decimals())).
+  """
+  balancePosition: BigInt!
+
+  """
+  The accumulated profit balance for the account/vault. It is only calculated when the user withdraws all the shares.
+  """
+  balanceProfit: BigInt!
+}
+
+type AccountVaultPositionUpdate {
+  """Account-Vault-Order"""
+  id: ID!
+
+  """Incremental value for the same account/vault."""
+  order: BigInt!
+
+  """Timestamp"""
+  timestamp: BigInt!
+
+  """Block number"""
+  blockNumber: BigInt!
+
+  """Account that owns position update"""
+  account: Account!
+
+  """The account vault position that this update applies to"""
+  accountVaultPosition: AccountVaultPosition!
+
+  """Ethereum Transaction"""
+  transaction: Transaction!
+
+  """Sum of token deposits"""
+  deposits: BigInt!
+
+  """Sum of token withdrawals"""
+  withdrawals: BigInt!
+
+  """Sum of share tokens minted"""
+  sharesMinted: BigInt!
+
+  """Sum of share tokens burnt"""
+  sharesBurnt: BigInt!
+  tokensSent: BigInt!
+  tokensReceived: BigInt!
+  sharesSent: BigInt!
+  sharesReceived: BigInt!
+  balanceShares: BigInt!
+
+  """The balance position."""
+  balancePosition: BigInt!
+
+  """Vault Update"""
+  vaultUpdate: VaultUpdate!
+}
+
+input AccountVaultPositionUpdate_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  order: BigInt
+  order_not: BigInt
+  order_gt: BigInt
+  order_lt: BigInt
+  order_gte: BigInt
+  order_lte: BigInt
+  order_in: [BigInt!]
+  order_not_in: [BigInt!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+  account: String
+  account_not: String
+  account_gt: String
+  account_lt: String
+  account_gte: String
+  account_lte: String
+  account_in: [String!]
+  account_not_in: [String!]
+  account_contains: String
+  account_not_contains: String
+  account_starts_with: String
+  account_not_starts_with: String
+  account_ends_with: String
+  account_not_ends_with: String
+  accountVaultPosition: String
+  accountVaultPosition_not: String
+  accountVaultPosition_gt: String
+  accountVaultPosition_lt: String
+  accountVaultPosition_gte: String
+  accountVaultPosition_lte: String
+  accountVaultPosition_in: [String!]
+  accountVaultPosition_not_in: [String!]
+  accountVaultPosition_contains: String
+  accountVaultPosition_not_contains: String
+  accountVaultPosition_starts_with: String
+  accountVaultPosition_not_starts_with: String
+  accountVaultPosition_ends_with: String
+  accountVaultPosition_not_ends_with: String
+  transaction: String
+  transaction_not: String
+  transaction_gt: String
+  transaction_lt: String
+  transaction_gte: String
+  transaction_lte: String
+  transaction_in: [String!]
+  transaction_not_in: [String!]
+  transaction_contains: String
+  transaction_not_contains: String
+  transaction_starts_with: String
+  transaction_not_starts_with: String
+  transaction_ends_with: String
+  transaction_not_ends_with: String
+  deposits: BigInt
+  deposits_not: BigInt
+  deposits_gt: BigInt
+  deposits_lt: BigInt
+  deposits_gte: BigInt
+  deposits_lte: BigInt
+  deposits_in: [BigInt!]
+  deposits_not_in: [BigInt!]
+  withdrawals: BigInt
+  withdrawals_not: BigInt
+  withdrawals_gt: BigInt
+  withdrawals_lt: BigInt
+  withdrawals_gte: BigInt
+  withdrawals_lte: BigInt
+  withdrawals_in: [BigInt!]
+  withdrawals_not_in: [BigInt!]
+  sharesMinted: BigInt
+  sharesMinted_not: BigInt
+  sharesMinted_gt: BigInt
+  sharesMinted_lt: BigInt
+  sharesMinted_gte: BigInt
+  sharesMinted_lte: BigInt
+  sharesMinted_in: [BigInt!]
+  sharesMinted_not_in: [BigInt!]
+  sharesBurnt: BigInt
+  sharesBurnt_not: BigInt
+  sharesBurnt_gt: BigInt
+  sharesBurnt_lt: BigInt
+  sharesBurnt_gte: BigInt
+  sharesBurnt_lte: BigInt
+  sharesBurnt_in: [BigInt!]
+  sharesBurnt_not_in: [BigInt!]
+  tokensSent: BigInt
+  tokensSent_not: BigInt
+  tokensSent_gt: BigInt
+  tokensSent_lt: BigInt
+  tokensSent_gte: BigInt
+  tokensSent_lte: BigInt
+  tokensSent_in: [BigInt!]
+  tokensSent_not_in: [BigInt!]
+  tokensReceived: BigInt
+  tokensReceived_not: BigInt
+  tokensReceived_gt: BigInt
+  tokensReceived_lt: BigInt
+  tokensReceived_gte: BigInt
+  tokensReceived_lte: BigInt
+  tokensReceived_in: [BigInt!]
+  tokensReceived_not_in: [BigInt!]
+  sharesSent: BigInt
+  sharesSent_not: BigInt
+  sharesSent_gt: BigInt
+  sharesSent_lt: BigInt
+  sharesSent_gte: BigInt
+  sharesSent_lte: BigInt
+  sharesSent_in: [BigInt!]
+  sharesSent_not_in: [BigInt!]
+  sharesReceived: BigInt
+  sharesReceived_not: BigInt
+  sharesReceived_gt: BigInt
+  sharesReceived_lt: BigInt
+  sharesReceived_gte: BigInt
+  sharesReceived_lte: BigInt
+  sharesReceived_in: [BigInt!]
+  sharesReceived_not_in: [BigInt!]
+  balanceShares: BigInt
+  balanceShares_not: BigInt
+  balanceShares_gt: BigInt
+  balanceShares_lt: BigInt
+  balanceShares_gte: BigInt
+  balanceShares_lte: BigInt
+  balanceShares_in: [BigInt!]
+  balanceShares_not_in: [BigInt!]
+  balancePosition: BigInt
+  balancePosition_not: BigInt
+  balancePosition_gt: BigInt
+  balancePosition_lt: BigInt
+  balancePosition_gte: BigInt
+  balancePosition_lte: BigInt
+  balancePosition_in: [BigInt!]
+  balancePosition_not_in: [BigInt!]
+  vaultUpdate: String
+  vaultUpdate_not: String
+  vaultUpdate_gt: String
+  vaultUpdate_lt: String
+  vaultUpdate_gte: String
+  vaultUpdate_lte: String
+  vaultUpdate_in: [String!]
+  vaultUpdate_not_in: [String!]
+  vaultUpdate_contains: String
+  vaultUpdate_not_contains: String
+  vaultUpdate_starts_with: String
+  vaultUpdate_not_starts_with: String
+  vaultUpdate_ends_with: String
+  vaultUpdate_not_ends_with: String
+}
+
+enum AccountVaultPositionUpdate_orderBy {
+  id
+  order
+  timestamp
+  blockNumber
+  account
+  accountVaultPosition
+  transaction
+  deposits
+  withdrawals
+  sharesMinted
+  sharesBurnt
+  tokensSent
+  tokensReceived
+  sharesSent
+  sharesReceived
+  balanceShares
+  balancePosition
+  vaultUpdate
+}
+
+input AccountVaultPosition_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  vault: String
+  vault_not: String
+  vault_gt: String
+  vault_lt: String
+  vault_gte: String
+  vault_lte: String
+  vault_in: [String!]
+  vault_not_in: [String!]
+  vault_contains: String
+  vault_not_contains: String
+  vault_starts_with: String
+  vault_not_starts_with: String
+  vault_ends_with: String
+  vault_not_ends_with: String
+  account: String
+  account_not: String
+  account_gt: String
+  account_lt: String
+  account_gte: String
+  account_lte: String
+  account_in: [String!]
+  account_not_in: [String!]
+  account_contains: String
+  account_not_contains: String
+  account_starts_with: String
+  account_not_starts_with: String
+  account_ends_with: String
+  account_not_ends_with: String
+  token: String
+  token_not: String
+  token_gt: String
+  token_lt: String
+  token_gte: String
+  token_lte: String
+  token_in: [String!]
+  token_not_in: [String!]
+  token_contains: String
+  token_not_contains: String
+  token_starts_with: String
+  token_not_starts_with: String
+  token_ends_with: String
+  token_not_ends_with: String
+  shareToken: String
+  shareToken_not: String
+  shareToken_gt: String
+  shareToken_lt: String
+  shareToken_gte: String
+  shareToken_lte: String
+  shareToken_in: [String!]
+  shareToken_not_in: [String!]
+  shareToken_contains: String
+  shareToken_not_contains: String
+  shareToken_starts_with: String
+  shareToken_not_starts_with: String
+  shareToken_ends_with: String
+  shareToken_not_ends_with: String
+  transaction: String
+  transaction_not: String
+  transaction_gt: String
+  transaction_lt: String
+  transaction_gte: String
+  transaction_lte: String
+  transaction_in: [String!]
+  transaction_not_in: [String!]
+  transaction_contains: String
+  transaction_not_contains: String
+  transaction_starts_with: String
+  transaction_not_starts_with: String
+  transaction_ends_with: String
+  transaction_not_ends_with: String
+  latestUpdate: String
+  latestUpdate_not: String
+  latestUpdate_gt: String
+  latestUpdate_lt: String
+  latestUpdate_gte: String
+  latestUpdate_lte: String
+  latestUpdate_in: [String!]
+  latestUpdate_not_in: [String!]
+  latestUpdate_contains: String
+  latestUpdate_not_contains: String
+  latestUpdate_starts_with: String
+  latestUpdate_not_starts_with: String
+  latestUpdate_ends_with: String
+  latestUpdate_not_ends_with: String
+  balanceShares: BigInt
+  balanceShares_not: BigInt
+  balanceShares_gt: BigInt
+  balanceShares_lt: BigInt
+  balanceShares_gte: BigInt
+  balanceShares_lte: BigInt
+  balanceShares_in: [BigInt!]
+  balanceShares_not_in: [BigInt!]
+  balanceTokens: BigInt
+  balanceTokens_not: BigInt
+  balanceTokens_gt: BigInt
+  balanceTokens_lt: BigInt
+  balanceTokens_gte: BigInt
+  balanceTokens_lte: BigInt
+  balanceTokens_in: [BigInt!]
+  balanceTokens_not_in: [BigInt!]
+  balancePosition: BigInt
+  balancePosition_not: BigInt
+  balancePosition_gt: BigInt
+  balancePosition_lt: BigInt
+  balancePosition_gte: BigInt
+  balancePosition_lte: BigInt
+  balancePosition_in: [BigInt!]
+  balancePosition_not_in: [BigInt!]
+  balanceProfit: BigInt
+  balanceProfit_not: BigInt
+  balanceProfit_gt: BigInt
+  balanceProfit_lt: BigInt
+  balanceProfit_gte: BigInt
+  balanceProfit_lte: BigInt
+  balanceProfit_in: [BigInt!]
+  balanceProfit_not_in: [BigInt!]
+}
+
+enum AccountVaultPosition_orderBy {
+  id
+  vault
+  account
+  token
+  shareToken
+  transaction
+  latestUpdate
+  updates
+  balanceShares
+  balanceTokens
+  balancePosition
+  balanceProfit
+}
+
+input Account_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+}
+
+enum Account_orderBy {
+  id
+  deposits
+  withdrawals
+  vaultPositions
+  sharesReceived
+  sharesSent
+}
+
+scalar BigDecimal
+
+scalar BigInt
+
+input Block_height {
+  hash: Bytes
+  number: Int
+}
+
+scalar Bytes
+
+type Deposit {
+  """Transaction-Log"""
+  id: ID!
+
+  """Timestamp of update"""
+  timestamp: BigInt!
+
+  """Block number of update"""
+  blockNumber: BigInt!
+
+  """Account making Deposit"""
+  account: Account!
+
+  """Vault deposited into"""
+  vault: Vault!
+
+  """Number of Tokens deposited into Vault"""
+  tokenAmount: BigInt!
+
+  """Number of new Vault Shares minted"""
+  sharesMinted: BigInt!
+
+  """Ethereum Transaction"""
+  transaction: Transaction!
+
+  """Vault Update"""
+  vaultUpdate: VaultUpdate!
+}
+
+input Deposit_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+  account: String
+  account_not: String
+  account_gt: String
+  account_lt: String
+  account_gte: String
+  account_lte: String
+  account_in: [String!]
+  account_not_in: [String!]
+  account_contains: String
+  account_not_contains: String
+  account_starts_with: String
+  account_not_starts_with: String
+  account_ends_with: String
+  account_not_ends_with: String
+  vault: String
+  vault_not: String
+  vault_gt: String
+  vault_lt: String
+  vault_gte: String
+  vault_lte: String
+  vault_in: [String!]
+  vault_not_in: [String!]
+  vault_contains: String
+  vault_not_contains: String
+  vault_starts_with: String
+  vault_not_starts_with: String
+  vault_ends_with: String
+  vault_not_ends_with: String
+  tokenAmount: BigInt
+  tokenAmount_not: BigInt
+  tokenAmount_gt: BigInt
+  tokenAmount_lt: BigInt
+  tokenAmount_gte: BigInt
+  tokenAmount_lte: BigInt
+  tokenAmount_in: [BigInt!]
+  tokenAmount_not_in: [BigInt!]
+  sharesMinted: BigInt
+  sharesMinted_not: BigInt
+  sharesMinted_gt: BigInt
+  sharesMinted_lt: BigInt
+  sharesMinted_gte: BigInt
+  sharesMinted_lte: BigInt
+  sharesMinted_in: [BigInt!]
+  sharesMinted_not_in: [BigInt!]
+  transaction: String
+  transaction_not: String
+  transaction_gt: String
+  transaction_lt: String
+  transaction_gte: String
+  transaction_lte: String
+  transaction_in: [String!]
+  transaction_not_in: [String!]
+  transaction_contains: String
+  transaction_not_contains: String
+  transaction_starts_with: String
+  transaction_not_starts_with: String
+  transaction_ends_with: String
+  transaction_not_ends_with: String
+  vaultUpdate: String
+  vaultUpdate_not: String
+  vaultUpdate_gt: String
+  vaultUpdate_lt: String
+  vaultUpdate_gte: String
+  vaultUpdate_lte: String
+  vaultUpdate_in: [String!]
+  vaultUpdate_not_in: [String!]
+  vaultUpdate_contains: String
+  vaultUpdate_not_contains: String
+  vaultUpdate_starts_with: String
+  vaultUpdate_not_starts_with: String
+  vaultUpdate_ends_with: String
+  vaultUpdate_not_ends_with: String
+}
+
+enum Deposit_orderBy {
+  id
+  timestamp
+  blockNumber
+  account
+  vault
+  tokenAmount
+  sharesMinted
+  transaction
+  vaultUpdate
+}
+
+type Harvest {
+  """Strategy-Transaction-Log"""
+  id: ID!
+
+  """Timestamp the strategy report was most recently updated."""
+  timestamp: BigInt!
+
+  """Blocknumber the strategy report was most recently updated."""
+  blockNumber: BigInt!
+
+  """Ethereum Transaction"""
+  transaction: Transaction!
+
+  """Vault that owns the strategy"""
+  vault: Vault!
+
+  """Strategy that harvested"""
+  strategy: Strategy!
+
+  """Function caller"""
+  harvester: Bytes!
+
+  """
+  The reported profit amount for the strategy at the time of the harvest.
+  """
+  profit: BigInt!
+
+  """The reported loss amount for the strategy at the time of the harvest."""
+  loss: BigInt!
+
+  """The reported debt paid from strategy at the time of the harvest."""
+  debtPayment: BigInt!
+
+  """
+  The reported outstanding debt from strategy at the time of the harvest.
+  """
+  debtOutstanding: BigInt!
+}
+
+input Harvest_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+  transaction: String
+  transaction_not: String
+  transaction_gt: String
+  transaction_lt: String
+  transaction_gte: String
+  transaction_lte: String
+  transaction_in: [String!]
+  transaction_not_in: [String!]
+  transaction_contains: String
+  transaction_not_contains: String
+  transaction_starts_with: String
+  transaction_not_starts_with: String
+  transaction_ends_with: String
+  transaction_not_ends_with: String
+  vault: String
+  vault_not: String
+  vault_gt: String
+  vault_lt: String
+  vault_gte: String
+  vault_lte: String
+  vault_in: [String!]
+  vault_not_in: [String!]
+  vault_contains: String
+  vault_not_contains: String
+  vault_starts_with: String
+  vault_not_starts_with: String
+  vault_ends_with: String
+  vault_not_ends_with: String
+  strategy: String
+  strategy_not: String
+  strategy_gt: String
+  strategy_lt: String
+  strategy_gte: String
+  strategy_lte: String
+  strategy_in: [String!]
+  strategy_not_in: [String!]
+  strategy_contains: String
+  strategy_not_contains: String
+  strategy_starts_with: String
+  strategy_not_starts_with: String
+  strategy_ends_with: String
+  strategy_not_ends_with: String
+  harvester: Bytes
+  harvester_not: Bytes
+  harvester_in: [Bytes!]
+  harvester_not_in: [Bytes!]
+  harvester_contains: Bytes
+  harvester_not_contains: Bytes
+  profit: BigInt
+  profit_not: BigInt
+  profit_gt: BigInt
+  profit_lt: BigInt
+  profit_gte: BigInt
+  profit_lte: BigInt
+  profit_in: [BigInt!]
+  profit_not_in: [BigInt!]
+  loss: BigInt
+  loss_not: BigInt
+  loss_gt: BigInt
+  loss_lt: BigInt
+  loss_gte: BigInt
+  loss_lte: BigInt
+  loss_in: [BigInt!]
+  loss_not_in: [BigInt!]
+  debtPayment: BigInt
+  debtPayment_not: BigInt
+  debtPayment_gt: BigInt
+  debtPayment_lt: BigInt
+  debtPayment_gte: BigInt
+  debtPayment_lte: BigInt
+  debtPayment_in: [BigInt!]
+  debtPayment_not_in: [BigInt!]
+  debtOutstanding: BigInt
+  debtOutstanding_not: BigInt
+  debtOutstanding_gt: BigInt
+  debtOutstanding_lt: BigInt
+  debtOutstanding_gte: BigInt
+  debtOutstanding_lte: BigInt
+  debtOutstanding_in: [BigInt!]
+  debtOutstanding_not_in: [BigInt!]
+}
+
+enum Harvest_orderBy {
+  id
+  timestamp
+  blockNumber
+  transaction
+  vault
+  strategy
+  harvester
+  profit
+  loss
+  debtPayment
+  debtOutstanding
+}
+
+enum OrderDirection {
+  asc
+  desc
+}
+
+type Query {
+  transaction(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Transaction
+  transactions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Transaction_orderBy
+    orderDirection: OrderDirection
+    where: Transaction_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Transaction!]!
+  token(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Token
+  tokens(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Token_orderBy
+    orderDirection: OrderDirection
+    where: Token_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Token!]!
+  tokenFee(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): TokenFee
+  tokenFees(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: TokenFee_orderBy
+    orderDirection: OrderDirection
+    where: TokenFee_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [TokenFee!]!
+  registry(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Registry
+  registries(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Registry_orderBy
+    orderDirection: OrderDirection
+    where: Registry_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Registry!]!
+  vault(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Vault
+  vaults(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Vault_orderBy
+    orderDirection: OrderDirection
+    where: Vault_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Vault!]!
+  vaultUpdate(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): VaultUpdate
+  vaultUpdates(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: VaultUpdate_orderBy
+    orderDirection: OrderDirection
+    where: VaultUpdate_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [VaultUpdate!]!
+  account(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Account
+  accounts(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Account_orderBy
+    orderDirection: OrderDirection
+    where: Account_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Account!]!
+  deposit(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Deposit
+  deposits(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Deposit_orderBy
+    orderDirection: OrderDirection
+    where: Deposit_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Deposit!]!
+  withdrawal(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Withdrawal
+  withdrawals(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Withdrawal_orderBy
+    orderDirection: OrderDirection
+    where: Withdrawal_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Withdrawal!]!
+  transfer(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Transfer
+  transfers(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Transfer_orderBy
+    orderDirection: OrderDirection
+    where: Transfer_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Transfer!]!
+  accountVaultPosition(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): AccountVaultPosition
+  accountVaultPositions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: AccountVaultPosition_orderBy
+    orderDirection: OrderDirection
+    where: AccountVaultPosition_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [AccountVaultPosition!]!
+  accountVaultPositionUpdate(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): AccountVaultPositionUpdate
+  accountVaultPositionUpdates(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: AccountVaultPositionUpdate_orderBy
+    orderDirection: OrderDirection
+    where: AccountVaultPositionUpdate_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [AccountVaultPositionUpdate!]!
+  strategy(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Strategy
+  strategies(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Strategy_orderBy
+    orderDirection: OrderDirection
+    where: Strategy_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Strategy!]!
+  strategyReport(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): StrategyReport
+  strategyReports(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: StrategyReport_orderBy
+    orderDirection: OrderDirection
+    where: StrategyReport_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [StrategyReport!]!
+  strategyReportResult(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): StrategyReportResult
+  strategyReportResults(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: StrategyReportResult_orderBy
+    orderDirection: OrderDirection
+    where: StrategyReportResult_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [StrategyReportResult!]!
+  harvest(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Harvest
+  harvests(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Harvest_orderBy
+    orderDirection: OrderDirection
+    where: Harvest_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Harvest!]!
+  vaultDayData(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): VaultDayData
+  vaultDayDatas(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: VaultDayData_orderBy
+    orderDirection: OrderDirection
+    where: VaultDayData_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [VaultDayData!]!
+  yearn(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Yearn
+  yearns(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Yearn_orderBy
+    orderDirection: OrderDirection
+    where: Yearn_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Yearn!]!
+
+  """Access to subgraph metadata"""
+  _meta(block: Block_height): _Meta_
+}
+
+type Registry {
+  """Registry address"""
+  id: ID!
+
+  """Transaction timestamp"""
+  timestamp: BigInt!
+
+  """Transaction/Block Block number"""
+  blockNumber: BigInt!
+
+  """Ethereum Transaction"""
+  transaction: Transaction!
+
+  """Vaults registered in the registry."""
+  vaults(skip: Int = 0, first: Int = 100, orderBy: Vault_orderBy, orderDirection: OrderDirection, where: Vault_filter): [Vault!]!
+}
+
+input Registry_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+  transaction: String
+  transaction_not: String
+  transaction_gt: String
+  transaction_lt: String
+  transaction_gte: String
+  transaction_lte: String
+  transaction_in: [String!]
+  transaction_not_in: [String!]
+  transaction_contains: String
+  transaction_not_contains: String
+  transaction_starts_with: String
+  transaction_not_starts_with: String
+  transaction_ends_with: String
+  transaction_not_ends_with: String
+}
+
+enum Registry_orderBy {
+  id
+  timestamp
+  blockNumber
+  transaction
+  vaults
+}
+
+type Strategy {
+  """Strategy address"""
+  id: ID!
+
+  """Strategy name."""
+  name: String!
+
+  """Timestamp the vault information was most recently updated."""
+  timestamp: BigInt!
+
+  """Blocknumber the vault information was most recently updated."""
+  blockNumber: BigInt!
+
+  """Ethereum Transaction"""
+  transaction: Transaction!
+
+  """The Strategy address."""
+  address: Bytes!
+
+  """The health check contract address."""
+  healthCheck: Bytes
+
+  """Defines whether the strategy will call the health check or not."""
+  doHealthCheck: Boolean!
+
+  """Defines whether this strategy is within the vault queue."""
+  inQueue: Boolean!
+
+  """The Vault"""
+  vault: Vault!
+
+  """Strategy reference used to clone this strategy."""
+  clonedFrom: Strategy
+
+  """
+  Defines the maximum borrow amount. In strategies <v0.3.5 it is debtRatio.
+  """
+  debtLimit: BigInt!
+
+  """Lower limit on the increase of debt since last harvest."""
+  minDebtPerHarvest: BigInt!
+
+  """Upper limit on the increase of debt since last harvest."""
+  maxDebtPerHarvest: BigInt!
+
+  """It is the current rate limit. It increases/decreases per block."""
+  rateLimit: BigInt!
+
+  """Defines the strategist's fee (basis points)."""
+  performanceFeeBps: BigInt!
+
+  """The latest report for this Strategy"""
+  latestReport: StrategyReport
+
+  """The reports created by this strategy."""
+  reports(skip: Int = 0, first: Int = 100, orderBy: StrategyReport_orderBy, orderDirection: OrderDirection, where: StrategyReport_filter): [StrategyReport!]!
+
+  """harvest() calls"""
+  harvests(skip: Int = 0, first: Int = 100, orderBy: Harvest_orderBy, orderDirection: OrderDirection, where: Harvest_filter): [Harvest!]!
+}
+
+type StrategyReport {
+  """The Strategy Report ID."""
+  id: ID!
+
+  """Timestamp the strategy report was most recently updated."""
+  timestamp: BigInt!
+
+  """Blocknumber the strategy report was most recently updated."""
+  blockNumber: BigInt!
+
+  """Ethereum Transaction"""
+  transaction: Transaction!
+
+  """The Strategy reference."""
+  strategy: Strategy!
+
+  """The reported gain amount for the strategy."""
+  gain: BigInt!
+
+  """The reported loss amount for the strategy."""
+  loss: BigInt!
+
+  """The reported total gain amount for the strategy."""
+  totalGain: BigInt!
+
+  """The reported total loss amount for the strategy."""
+  totalLoss: BigInt!
+
+  """The reported total debt amount for the strategy."""
+  totalDebt: BigInt!
+
+  """The reported debt added amount for the strategy."""
+  debtAdded: BigInt!
+
+  """The reported debt limit amount for the strategy."""
+  debtLimit: BigInt!
+
+  """
+  The reported debt paid for the strategy. This field is 0 for v0.3.0 or v0.3.1.
+  """
+  debtPaid: BigInt!
+
+  """
+  The results created by this report. They are generated comparing the previous report and the current one.
+  """
+  results(skip: Int = 0, first: Int = 100, orderBy: StrategyReportResult_orderBy, orderDirection: OrderDirection, where: StrategyReportResult_filter): [StrategyReportResult!]!
+}
+
+type StrategyReportResult {
+  """The Strategy Report Result ID."""
+  id: ID!
+
+  """Timestamp the strategy report was most recently updated."""
+  timestamp: BigInt!
+
+  """Blocknumber the strategy report was most recently updated."""
+  blockNumber: BigInt!
+
+  """The current strategy report."""
+  currentReport: StrategyReport!
+
+  """The previous strategy report."""
+  previousReport: StrategyReport!
+  startTimestamp: BigInt!
+  endTimestamp: BigInt!
+
+  """The duration (in days) from the previous report."""
+  duration: BigDecimal!
+
+  """Duration percentage rate."""
+  durationPr: BigDecimal!
+
+  """Annual Percentage Rate."""
+  apr: BigDecimal!
+
+  """Ethereum Transaction"""
+  transaction: Transaction!
+}
+
+input StrategyReportResult_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+  currentReport: String
+  currentReport_not: String
+  currentReport_gt: String
+  currentReport_lt: String
+  currentReport_gte: String
+  currentReport_lte: String
+  currentReport_in: [String!]
+  currentReport_not_in: [String!]
+  currentReport_contains: String
+  currentReport_not_contains: String
+  currentReport_starts_with: String
+  currentReport_not_starts_with: String
+  currentReport_ends_with: String
+  currentReport_not_ends_with: String
+  previousReport: String
+  previousReport_not: String
+  previousReport_gt: String
+  previousReport_lt: String
+  previousReport_gte: String
+  previousReport_lte: String
+  previousReport_in: [String!]
+  previousReport_not_in: [String!]
+  previousReport_contains: String
+  previousReport_not_contains: String
+  previousReport_starts_with: String
+  previousReport_not_starts_with: String
+  previousReport_ends_with: String
+  previousReport_not_ends_with: String
+  startTimestamp: BigInt
+  startTimestamp_not: BigInt
+  startTimestamp_gt: BigInt
+  startTimestamp_lt: BigInt
+  startTimestamp_gte: BigInt
+  startTimestamp_lte: BigInt
+  startTimestamp_in: [BigInt!]
+  startTimestamp_not_in: [BigInt!]
+  endTimestamp: BigInt
+  endTimestamp_not: BigInt
+  endTimestamp_gt: BigInt
+  endTimestamp_lt: BigInt
+  endTimestamp_gte: BigInt
+  endTimestamp_lte: BigInt
+  endTimestamp_in: [BigInt!]
+  endTimestamp_not_in: [BigInt!]
+  duration: BigDecimal
+  duration_not: BigDecimal
+  duration_gt: BigDecimal
+  duration_lt: BigDecimal
+  duration_gte: BigDecimal
+  duration_lte: BigDecimal
+  duration_in: [BigDecimal!]
+  duration_not_in: [BigDecimal!]
+  durationPr: BigDecimal
+  durationPr_not: BigDecimal
+  durationPr_gt: BigDecimal
+  durationPr_lt: BigDecimal
+  durationPr_gte: BigDecimal
+  durationPr_lte: BigDecimal
+  durationPr_in: [BigDecimal!]
+  durationPr_not_in: [BigDecimal!]
+  apr: BigDecimal
+  apr_not: BigDecimal
+  apr_gt: BigDecimal
+  apr_lt: BigDecimal
+  apr_gte: BigDecimal
+  apr_lte: BigDecimal
+  apr_in: [BigDecimal!]
+  apr_not_in: [BigDecimal!]
+  transaction: String
+  transaction_not: String
+  transaction_gt: String
+  transaction_lt: String
+  transaction_gte: String
+  transaction_lte: String
+  transaction_in: [String!]
+  transaction_not_in: [String!]
+  transaction_contains: String
+  transaction_not_contains: String
+  transaction_starts_with: String
+  transaction_not_starts_with: String
+  transaction_ends_with: String
+  transaction_not_ends_with: String
+}
+
+enum StrategyReportResult_orderBy {
+  id
+  timestamp
+  blockNumber
+  currentReport
+  previousReport
+  startTimestamp
+  endTimestamp
+  duration
+  durationPr
+  apr
+  transaction
+}
+
+input StrategyReport_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+  transaction: String
+  transaction_not: String
+  transaction_gt: String
+  transaction_lt: String
+  transaction_gte: String
+  transaction_lte: String
+  transaction_in: [String!]
+  transaction_not_in: [String!]
+  transaction_contains: String
+  transaction_not_contains: String
+  transaction_starts_with: String
+  transaction_not_starts_with: String
+  transaction_ends_with: String
+  transaction_not_ends_with: String
+  strategy: String
+  strategy_not: String
+  strategy_gt: String
+  strategy_lt: String
+  strategy_gte: String
+  strategy_lte: String
+  strategy_in: [String!]
+  strategy_not_in: [String!]
+  strategy_contains: String
+  strategy_not_contains: String
+  strategy_starts_with: String
+  strategy_not_starts_with: String
+  strategy_ends_with: String
+  strategy_not_ends_with: String
+  gain: BigInt
+  gain_not: BigInt
+  gain_gt: BigInt
+  gain_lt: BigInt
+  gain_gte: BigInt
+  gain_lte: BigInt
+  gain_in: [BigInt!]
+  gain_not_in: [BigInt!]
+  loss: BigInt
+  loss_not: BigInt
+  loss_gt: BigInt
+  loss_lt: BigInt
+  loss_gte: BigInt
+  loss_lte: BigInt
+  loss_in: [BigInt!]
+  loss_not_in: [BigInt!]
+  totalGain: BigInt
+  totalGain_not: BigInt
+  totalGain_gt: BigInt
+  totalGain_lt: BigInt
+  totalGain_gte: BigInt
+  totalGain_lte: BigInt
+  totalGain_in: [BigInt!]
+  totalGain_not_in: [BigInt!]
+  totalLoss: BigInt
+  totalLoss_not: BigInt
+  totalLoss_gt: BigInt
+  totalLoss_lt: BigInt
+  totalLoss_gte: BigInt
+  totalLoss_lte: BigInt
+  totalLoss_in: [BigInt!]
+  totalLoss_not_in: [BigInt!]
+  totalDebt: BigInt
+  totalDebt_not: BigInt
+  totalDebt_gt: BigInt
+  totalDebt_lt: BigInt
+  totalDebt_gte: BigInt
+  totalDebt_lte: BigInt
+  totalDebt_in: [BigInt!]
+  totalDebt_not_in: [BigInt!]
+  debtAdded: BigInt
+  debtAdded_not: BigInt
+  debtAdded_gt: BigInt
+  debtAdded_lt: BigInt
+  debtAdded_gte: BigInt
+  debtAdded_lte: BigInt
+  debtAdded_in: [BigInt!]
+  debtAdded_not_in: [BigInt!]
+  debtLimit: BigInt
+  debtLimit_not: BigInt
+  debtLimit_gt: BigInt
+  debtLimit_lt: BigInt
+  debtLimit_gte: BigInt
+  debtLimit_lte: BigInt
+  debtLimit_in: [BigInt!]
+  debtLimit_not_in: [BigInt!]
+  debtPaid: BigInt
+  debtPaid_not: BigInt
+  debtPaid_gt: BigInt
+  debtPaid_lt: BigInt
+  debtPaid_gte: BigInt
+  debtPaid_lte: BigInt
+  debtPaid_in: [BigInt!]
+  debtPaid_not_in: [BigInt!]
+}
+
+enum StrategyReport_orderBy {
+  id
+  timestamp
+  blockNumber
+  transaction
+  strategy
+  gain
+  loss
+  totalGain
+  totalLoss
+  totalDebt
+  debtAdded
+  debtLimit
+  debtPaid
+  results
+}
+
+enum StrategyStatus {
+  Active
+  Retired
+}
+
+input Strategy_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  name: String
+  name_not: String
+  name_gt: String
+  name_lt: String
+  name_gte: String
+  name_lte: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+  transaction: String
+  transaction_not: String
+  transaction_gt: String
+  transaction_lt: String
+  transaction_gte: String
+  transaction_lte: String
+  transaction_in: [String!]
+  transaction_not_in: [String!]
+  transaction_contains: String
+  transaction_not_contains: String
+  transaction_starts_with: String
+  transaction_not_starts_with: String
+  transaction_ends_with: String
+  transaction_not_ends_with: String
+  address: Bytes
+  address_not: Bytes
+  address_in: [Bytes!]
+  address_not_in: [Bytes!]
+  address_contains: Bytes
+  address_not_contains: Bytes
+  healthCheck: Bytes
+  healthCheck_not: Bytes
+  healthCheck_in: [Bytes!]
+  healthCheck_not_in: [Bytes!]
+  healthCheck_contains: Bytes
+  healthCheck_not_contains: Bytes
+  doHealthCheck: Boolean
+  doHealthCheck_not: Boolean
+  doHealthCheck_in: [Boolean!]
+  doHealthCheck_not_in: [Boolean!]
+  inQueue: Boolean
+  inQueue_not: Boolean
+  inQueue_in: [Boolean!]
+  inQueue_not_in: [Boolean!]
+  vault: String
+  vault_not: String
+  vault_gt: String
+  vault_lt: String
+  vault_gte: String
+  vault_lte: String
+  vault_in: [String!]
+  vault_not_in: [String!]
+  vault_contains: String
+  vault_not_contains: String
+  vault_starts_with: String
+  vault_not_starts_with: String
+  vault_ends_with: String
+  vault_not_ends_with: String
+  clonedFrom: String
+  clonedFrom_not: String
+  clonedFrom_gt: String
+  clonedFrom_lt: String
+  clonedFrom_gte: String
+  clonedFrom_lte: String
+  clonedFrom_in: [String!]
+  clonedFrom_not_in: [String!]
+  clonedFrom_contains: String
+  clonedFrom_not_contains: String
+  clonedFrom_starts_with: String
+  clonedFrom_not_starts_with: String
+  clonedFrom_ends_with: String
+  clonedFrom_not_ends_with: String
+  debtLimit: BigInt
+  debtLimit_not: BigInt
+  debtLimit_gt: BigInt
+  debtLimit_lt: BigInt
+  debtLimit_gte: BigInt
+  debtLimit_lte: BigInt
+  debtLimit_in: [BigInt!]
+  debtLimit_not_in: [BigInt!]
+  minDebtPerHarvest: BigInt
+  minDebtPerHarvest_not: BigInt
+  minDebtPerHarvest_gt: BigInt
+  minDebtPerHarvest_lt: BigInt
+  minDebtPerHarvest_gte: BigInt
+  minDebtPerHarvest_lte: BigInt
+  minDebtPerHarvest_in: [BigInt!]
+  minDebtPerHarvest_not_in: [BigInt!]
+  maxDebtPerHarvest: BigInt
+  maxDebtPerHarvest_not: BigInt
+  maxDebtPerHarvest_gt: BigInt
+  maxDebtPerHarvest_lt: BigInt
+  maxDebtPerHarvest_gte: BigInt
+  maxDebtPerHarvest_lte: BigInt
+  maxDebtPerHarvest_in: [BigInt!]
+  maxDebtPerHarvest_not_in: [BigInt!]
+  rateLimit: BigInt
+  rateLimit_not: BigInt
+  rateLimit_gt: BigInt
+  rateLimit_lt: BigInt
+  rateLimit_gte: BigInt
+  rateLimit_lte: BigInt
+  rateLimit_in: [BigInt!]
+  rateLimit_not_in: [BigInt!]
+  performanceFeeBps: BigInt
+  performanceFeeBps_not: BigInt
+  performanceFeeBps_gt: BigInt
+  performanceFeeBps_lt: BigInt
+  performanceFeeBps_gte: BigInt
+  performanceFeeBps_lte: BigInt
+  performanceFeeBps_in: [BigInt!]
+  performanceFeeBps_not_in: [BigInt!]
+  latestReport: String
+  latestReport_not: String
+  latestReport_gt: String
+  latestReport_lt: String
+  latestReport_gte: String
+  latestReport_lte: String
+  latestReport_in: [String!]
+  latestReport_not_in: [String!]
+  latestReport_contains: String
+  latestReport_not_contains: String
+  latestReport_starts_with: String
+  latestReport_not_starts_with: String
+  latestReport_ends_with: String
+  latestReport_not_ends_with: String
+}
+
+enum Strategy_orderBy {
+  id
+  name
+  timestamp
+  blockNumber
+  transaction
+  address
+  healthCheck
+  doHealthCheck
+  inQueue
+  vault
+  clonedFrom
+  debtLimit
+  minDebtPerHarvest
+  maxDebtPerHarvest
+  rateLimit
+  performanceFeeBps
+  latestReport
+  reports
+  harvests
+}
+
+type Subscription {
+  transaction(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Transaction
+  transactions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Transaction_orderBy
+    orderDirection: OrderDirection
+    where: Transaction_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Transaction!]!
+  token(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Token
+  tokens(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Token_orderBy
+    orderDirection: OrderDirection
+    where: Token_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Token!]!
+  tokenFee(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): TokenFee
+  tokenFees(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: TokenFee_orderBy
+    orderDirection: OrderDirection
+    where: TokenFee_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [TokenFee!]!
+  registry(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Registry
+  registries(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Registry_orderBy
+    orderDirection: OrderDirection
+    where: Registry_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Registry!]!
+  vault(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Vault
+  vaults(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Vault_orderBy
+    orderDirection: OrderDirection
+    where: Vault_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Vault!]!
+  vaultUpdate(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): VaultUpdate
+  vaultUpdates(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: VaultUpdate_orderBy
+    orderDirection: OrderDirection
+    where: VaultUpdate_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [VaultUpdate!]!
+  account(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Account
+  accounts(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Account_orderBy
+    orderDirection: OrderDirection
+    where: Account_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Account!]!
+  deposit(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Deposit
+  deposits(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Deposit_orderBy
+    orderDirection: OrderDirection
+    where: Deposit_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Deposit!]!
+  withdrawal(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Withdrawal
+  withdrawals(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Withdrawal_orderBy
+    orderDirection: OrderDirection
+    where: Withdrawal_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Withdrawal!]!
+  transfer(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Transfer
+  transfers(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Transfer_orderBy
+    orderDirection: OrderDirection
+    where: Transfer_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Transfer!]!
+  accountVaultPosition(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): AccountVaultPosition
+  accountVaultPositions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: AccountVaultPosition_orderBy
+    orderDirection: OrderDirection
+    where: AccountVaultPosition_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [AccountVaultPosition!]!
+  accountVaultPositionUpdate(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): AccountVaultPositionUpdate
+  accountVaultPositionUpdates(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: AccountVaultPositionUpdate_orderBy
+    orderDirection: OrderDirection
+    where: AccountVaultPositionUpdate_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [AccountVaultPositionUpdate!]!
+  strategy(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Strategy
+  strategies(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Strategy_orderBy
+    orderDirection: OrderDirection
+    where: Strategy_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Strategy!]!
+  strategyReport(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): StrategyReport
+  strategyReports(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: StrategyReport_orderBy
+    orderDirection: OrderDirection
+    where: StrategyReport_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [StrategyReport!]!
+  strategyReportResult(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): StrategyReportResult
+  strategyReportResults(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: StrategyReportResult_orderBy
+    orderDirection: OrderDirection
+    where: StrategyReportResult_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [StrategyReportResult!]!
+  harvest(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Harvest
+  harvests(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Harvest_orderBy
+    orderDirection: OrderDirection
+    where: Harvest_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Harvest!]!
+  vaultDayData(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): VaultDayData
+  vaultDayDatas(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: VaultDayData_orderBy
+    orderDirection: OrderDirection
+    where: VaultDayData_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [VaultDayData!]!
+  yearn(
+    id: ID!
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Yearn
+  yearns(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Yearn_orderBy
+    orderDirection: OrderDirection
+    where: Yearn_filter
+
+    """
+    The block at which the query should be executed. Can either be an `{ number: Int }` containing the block number or a `{ hash: Bytes }` value containing a block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Yearn!]!
+
+  """Access to subgraph metadata"""
+  _meta(block: Block_height): _Meta_
+}
+
+type Token {
+  """Token address"""
+  id: ID!
+
+  """Number of decimals for this Token"""
+  decimals: Int!
+
+  """Name of the Token"""
+  name: String!
+
+  """Symbol of the Token"""
+  symbol: String!
+}
+
+type TokenFee {
+  """Token address"""
+  id: ID!
+
+  """Fees paid using this token to the treasury"""
+  treasuryFees: BigInt!
+
+  """Fees paid using this token to strategies"""
+  strategyFees: BigInt!
+
+  """Fees paid using this token to strategies and the treasury"""
+  totalFees: BigInt!
+  token: Token!
+}
+
+input TokenFee_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  treasuryFees: BigInt
+  treasuryFees_not: BigInt
+  treasuryFees_gt: BigInt
+  treasuryFees_lt: BigInt
+  treasuryFees_gte: BigInt
+  treasuryFees_lte: BigInt
+  treasuryFees_in: [BigInt!]
+  treasuryFees_not_in: [BigInt!]
+  strategyFees: BigInt
+  strategyFees_not: BigInt
+  strategyFees_gt: BigInt
+  strategyFees_lt: BigInt
+  strategyFees_gte: BigInt
+  strategyFees_lte: BigInt
+  strategyFees_in: [BigInt!]
+  strategyFees_not_in: [BigInt!]
+  totalFees: BigInt
+  totalFees_not: BigInt
+  totalFees_gt: BigInt
+  totalFees_lt: BigInt
+  totalFees_gte: BigInt
+  totalFees_lte: BigInt
+  totalFees_in: [BigInt!]
+  totalFees_not_in: [BigInt!]
+  token: String
+  token_not: String
+  token_gt: String
+  token_lt: String
+  token_gte: String
+  token_lte: String
+  token_in: [String!]
+  token_not_in: [String!]
+  token_contains: String
+  token_not_contains: String
+  token_starts_with: String
+  token_not_starts_with: String
+  token_ends_with: String
+  token_not_ends_with: String
+}
+
+enum TokenFee_orderBy {
+  id
+  treasuryFees
+  strategyFees
+  totalFees
+  token
+}
+
+input Token_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  decimals: Int
+  decimals_not: Int
+  decimals_gt: Int
+  decimals_lt: Int
+  decimals_gte: Int
+  decimals_lte: Int
+  decimals_in: [Int!]
+  decimals_not_in: [Int!]
+  name: String
+  name_not: String
+  name_gt: String
+  name_lt: String
+  name_gte: String
+  name_lte: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  symbol: String
+  symbol_not: String
+  symbol_gt: String
+  symbol_lt: String
+  symbol_gte: String
+  symbol_lte: String
+  symbol_in: [String!]
+  symbol_not_in: [String!]
+  symbol_contains: String
+  symbol_not_contains: String
+  symbol_starts_with: String
+  symbol_not_starts_with: String
+  symbol_ends_with: String
+  symbol_not_ends_with: String
+}
+
+enum Token_orderBy {
+  id
+  decimals
+  name
+  symbol
+}
+
+type Transaction {
+  """Transaction hash + Log Index"""
+  id: ID!
+
+  """
+  Log index related to the event. A Transaction might contain multiple events.
+  """
+  logIndex: BigInt!
+
+  """The event name / call stacktrace"""
+  event: String!
+
+  """The transaction sender"""
+  from: Bytes!
+
+  """Gas price used in the transaction"""
+  gasPrice: BigInt!
+
+  """Gas sent used in the transaction"""
+  gasSent: BigInt!
+
+  """Transaction hash"""
+  hash: Bytes!
+
+  """The transaction index"""
+  index: BigInt!
+
+  """Address that received the transaction"""
+  to: Bytes!
+
+  """Ether value sent in the transaction"""
+  value: BigInt!
+
+  """Timestamp when the transaction was executed"""
+  timestamp: BigInt!
+
+  """Gas limit used in the transaction"""
+  gasLimit: BigInt!
+
+  """Block number"""
+  blockNumber: BigInt!
+}
+
+input Transaction_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  logIndex: BigInt
+  logIndex_not: BigInt
+  logIndex_gt: BigInt
+  logIndex_lt: BigInt
+  logIndex_gte: BigInt
+  logIndex_lte: BigInt
+  logIndex_in: [BigInt!]
+  logIndex_not_in: [BigInt!]
+  event: String
+  event_not: String
+  event_gt: String
+  event_lt: String
+  event_gte: String
+  event_lte: String
+  event_in: [String!]
+  event_not_in: [String!]
+  event_contains: String
+  event_not_contains: String
+  event_starts_with: String
+  event_not_starts_with: String
+  event_ends_with: String
+  event_not_ends_with: String
+  from: Bytes
+  from_not: Bytes
+  from_in: [Bytes!]
+  from_not_in: [Bytes!]
+  from_contains: Bytes
+  from_not_contains: Bytes
+  gasPrice: BigInt
+  gasPrice_not: BigInt
+  gasPrice_gt: BigInt
+  gasPrice_lt: BigInt
+  gasPrice_gte: BigInt
+  gasPrice_lte: BigInt
+  gasPrice_in: [BigInt!]
+  gasPrice_not_in: [BigInt!]
+  gasSent: BigInt
+  gasSent_not: BigInt
+  gasSent_gt: BigInt
+  gasSent_lt: BigInt
+  gasSent_gte: BigInt
+  gasSent_lte: BigInt
+  gasSent_in: [BigInt!]
+  gasSent_not_in: [BigInt!]
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
+  index: BigInt
+  index_not: BigInt
+  index_gt: BigInt
+  index_lt: BigInt
+  index_gte: BigInt
+  index_lte: BigInt
+  index_in: [BigInt!]
+  index_not_in: [BigInt!]
+  to: Bytes
+  to_not: Bytes
+  to_in: [Bytes!]
+  to_not_in: [Bytes!]
+  to_contains: Bytes
+  to_not_contains: Bytes
+  value: BigInt
+  value_not: BigInt
+  value_gt: BigInt
+  value_lt: BigInt
+  value_gte: BigInt
+  value_lte: BigInt
+  value_in: [BigInt!]
+  value_not_in: [BigInt!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  gasLimit: BigInt
+  gasLimit_not: BigInt
+  gasLimit_gt: BigInt
+  gasLimit_lt: BigInt
+  gasLimit_gte: BigInt
+  gasLimit_lte: BigInt
+  gasLimit_in: [BigInt!]
+  gasLimit_not_in: [BigInt!]
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+}
+
+enum Transaction_orderBy {
+  id
+  logIndex
+  event
+  from
+  gasPrice
+  gasSent
+  hash
+  index
+  to
+  value
+  timestamp
+  gasLimit
+  blockNumber
+}
+
+type Transfer {
+  """Transaction-Log"""
+  id: ID!
+
+  """Vault"""
+  vault: Vault!
+
+  """Sender"""
+  from: Account!
+
+  """Receiver"""
+  to: Account!
+
+  """Vault Share Token"""
+  shareToken: Token!
+
+  """Number of Vault Shares transferred"""
+  shareAmount: BigInt!
+
+  """Vault Token"""
+  token: Token!
+
+  """Number of Tokens redeemable for shares transferred"""
+  tokenAmount: BigInt!
+
+  """
+  Token Amount in USDC, 0 if the transaction was before the oracle was deployed at 12198044
+  """
+  tokenAmountUsdc: BigInt!
+
+  """Timestamp of Transfer"""
+  timestamp: BigInt!
+
+  """Block number of Transfer"""
+  blockNumber: BigInt!
+
+  """Ethereum Transaction"""
+  transaction: Transaction!
+
+  """
+  Whether the transfer was used to pay a fee to the vault's rewards address
+  """
+  isFeeToTreasury: Boolean!
+
+  """Whether the transfer was used to pay a fee to a strategy"""
+  isFeeToStrategy: Boolean!
+}
+
+input Transfer_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  vault: String
+  vault_not: String
+  vault_gt: String
+  vault_lt: String
+  vault_gte: String
+  vault_lte: String
+  vault_in: [String!]
+  vault_not_in: [String!]
+  vault_contains: String
+  vault_not_contains: String
+  vault_starts_with: String
+  vault_not_starts_with: String
+  vault_ends_with: String
+  vault_not_ends_with: String
+  from: String
+  from_not: String
+  from_gt: String
+  from_lt: String
+  from_gte: String
+  from_lte: String
+  from_in: [String!]
+  from_not_in: [String!]
+  from_contains: String
+  from_not_contains: String
+  from_starts_with: String
+  from_not_starts_with: String
+  from_ends_with: String
+  from_not_ends_with: String
+  to: String
+  to_not: String
+  to_gt: String
+  to_lt: String
+  to_gte: String
+  to_lte: String
+  to_in: [String!]
+  to_not_in: [String!]
+  to_contains: String
+  to_not_contains: String
+  to_starts_with: String
+  to_not_starts_with: String
+  to_ends_with: String
+  to_not_ends_with: String
+  shareToken: String
+  shareToken_not: String
+  shareToken_gt: String
+  shareToken_lt: String
+  shareToken_gte: String
+  shareToken_lte: String
+  shareToken_in: [String!]
+  shareToken_not_in: [String!]
+  shareToken_contains: String
+  shareToken_not_contains: String
+  shareToken_starts_with: String
+  shareToken_not_starts_with: String
+  shareToken_ends_with: String
+  shareToken_not_ends_with: String
+  shareAmount: BigInt
+  shareAmount_not: BigInt
+  shareAmount_gt: BigInt
+  shareAmount_lt: BigInt
+  shareAmount_gte: BigInt
+  shareAmount_lte: BigInt
+  shareAmount_in: [BigInt!]
+  shareAmount_not_in: [BigInt!]
+  token: String
+  token_not: String
+  token_gt: String
+  token_lt: String
+  token_gte: String
+  token_lte: String
+  token_in: [String!]
+  token_not_in: [String!]
+  token_contains: String
+  token_not_contains: String
+  token_starts_with: String
+  token_not_starts_with: String
+  token_ends_with: String
+  token_not_ends_with: String
+  tokenAmount: BigInt
+  tokenAmount_not: BigInt
+  tokenAmount_gt: BigInt
+  tokenAmount_lt: BigInt
+  tokenAmount_gte: BigInt
+  tokenAmount_lte: BigInt
+  tokenAmount_in: [BigInt!]
+  tokenAmount_not_in: [BigInt!]
+  tokenAmountUsdc: BigInt
+  tokenAmountUsdc_not: BigInt
+  tokenAmountUsdc_gt: BigInt
+  tokenAmountUsdc_lt: BigInt
+  tokenAmountUsdc_gte: BigInt
+  tokenAmountUsdc_lte: BigInt
+  tokenAmountUsdc_in: [BigInt!]
+  tokenAmountUsdc_not_in: [BigInt!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+  transaction: String
+  transaction_not: String
+  transaction_gt: String
+  transaction_lt: String
+  transaction_gte: String
+  transaction_lte: String
+  transaction_in: [String!]
+  transaction_not_in: [String!]
+  transaction_contains: String
+  transaction_not_contains: String
+  transaction_starts_with: String
+  transaction_not_starts_with: String
+  transaction_ends_with: String
+  transaction_not_ends_with: String
+  isFeeToTreasury: Boolean
+  isFeeToTreasury_not: Boolean
+  isFeeToTreasury_in: [Boolean!]
+  isFeeToTreasury_not_in: [Boolean!]
+  isFeeToStrategy: Boolean
+  isFeeToStrategy_not: Boolean
+  isFeeToStrategy_in: [Boolean!]
+  isFeeToStrategy_not_in: [Boolean!]
+}
+
+enum Transfer_orderBy {
+  id
+  vault
+  from
+  to
+  shareToken
+  shareAmount
+  token
+  tokenAmount
+  tokenAmountUsdc
+  timestamp
+  blockNumber
+  transaction
+  isFeeToTreasury
+  isFeeToStrategy
+}
+
+type Vault {
+  """Vault address"""
+  id: ID!
+
+  """Ethereum Transaction"""
+  transaction: Transaction!
+
+  """The registry address"""
+  registry: Registry!
+
+  """Token this Vault will accrue"""
+  token: Token!
+
+  """Token representing Shares in the Vault"""
+  shareToken: Token!
+
+  """Vault classification"""
+  classification: VaultClassification!
+
+  """Latest Vault Update"""
+  latestUpdate: VaultUpdate
+  vaultDayData(skip: Int = 0, first: Int = 100, orderBy: VaultDayData_orderBy, orderDirection: OrderDirection, where: VaultDayData_filter): [VaultDayData!]!
+
+  """All Vault Updates"""
+  historicalUpdates(skip: Int = 0, first: Int = 100, orderBy: VaultUpdate_orderBy, orderDirection: OrderDirection, where: VaultUpdate_filter): [VaultUpdate!]!
+
+  """Strategies for this Vault"""
+  strategies(skip: Int = 0, first: Int = 100, orderBy: Strategy_orderBy, orderDirection: OrderDirection, where: Strategy_filter): [Strategy!]!
+
+  """Token deposits into the Vault"""
+  deposits(skip: Int = 0, first: Int = 100, orderBy: Deposit_orderBy, orderDirection: OrderDirection, where: Deposit_filter): [Deposit!]!
+
+  """Token withdrawals from the Vault"""
+  withdrawals(skip: Int = 0, first: Int = 100, orderBy: Withdrawal_orderBy, orderDirection: OrderDirection, where: Withdrawal_filter): [Withdrawal!]!
+
+  """Transfers of Vault Shares"""
+  transfers(skip: Int = 0, first: Int = 100, orderBy: Transfer_orderBy, orderDirection: OrderDirection, where: Transfer_filter): [Transfer!]!
+
+  """Tags attached to the Vault"""
+  tags: [String!]!
+
+  """Balance of Tokens in the Vault and its Strategies"""
+  balanceTokens: BigInt!
+
+  """Current idle Token balance"""
+  balanceTokensIdle: BigInt!
+
+  """Balance of Tokens invested into Strategies"""
+  balanceTokensInvested: BigInt!
+
+  """Deposit limit for Tokens in the Vault"""
+  tokensDepositLimit: BigInt!
+
+  """Current supply of Shares"""
+  sharesSupply: BigInt!
+
+  """Management fee in basis points"""
+  managementFeeBps: Int!
+
+  """Performance fee in basis points"""
+  performanceFeeBps: Int!
+
+  """The address where management fees are paid to"""
+  rewards: Bytes!
+
+  """
+  This technical field defines whether this vault is a custom item (created by a custom handler) or not (created by the registry dynamically).
+  """
+  isTemplateListening: Boolean!
+
+  """Creation timestamp"""
+  activation: BigInt!
+
+  """The API version."""
+  apiVersion: String!
+}
+
+enum VaultClassification {
+  Endorsed
+  Experimental
+}
+
+type VaultDayData {
+  id: ID!
+
+  """time in UTC"""
+  timestamp: BigInt!
+  vault: Vault!
+  pricePerShare: BigInt!
+
+  """The amount of tokens deposited to this vault this day"""
+  deposited: BigInt!
+
+  """The amount of tokens withdrawn from this vault this day"""
+  withdrawn: BigInt!
+
+  """
+  The total earnings generated for this vault up to and including this day
+  """
+  totalReturnsGenerated: BigInt!
+
+  """
+  The total earnings generated in USDC for this vault up to and including this day
+  """
+  totalReturnsGeneratedUSDC: BigInt!
+
+  """The earnings generated for this vault this day"""
+  dayReturnsGenerated: BigInt!
+
+  """The earnings generated in USDC for this vault this day"""
+  dayReturnsGeneratedUSDC: BigInt!
+
+  """The price of one of the vault's underlying token"""
+  tokenPriceUSDC: BigInt!
+}
+
+input VaultDayData_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  vault: String
+  vault_not: String
+  vault_gt: String
+  vault_lt: String
+  vault_gte: String
+  vault_lte: String
+  vault_in: [String!]
+  vault_not_in: [String!]
+  vault_contains: String
+  vault_not_contains: String
+  vault_starts_with: String
+  vault_not_starts_with: String
+  vault_ends_with: String
+  vault_not_ends_with: String
+  pricePerShare: BigInt
+  pricePerShare_not: BigInt
+  pricePerShare_gt: BigInt
+  pricePerShare_lt: BigInt
+  pricePerShare_gte: BigInt
+  pricePerShare_lte: BigInt
+  pricePerShare_in: [BigInt!]
+  pricePerShare_not_in: [BigInt!]
+  deposited: BigInt
+  deposited_not: BigInt
+  deposited_gt: BigInt
+  deposited_lt: BigInt
+  deposited_gte: BigInt
+  deposited_lte: BigInt
+  deposited_in: [BigInt!]
+  deposited_not_in: [BigInt!]
+  withdrawn: BigInt
+  withdrawn_not: BigInt
+  withdrawn_gt: BigInt
+  withdrawn_lt: BigInt
+  withdrawn_gte: BigInt
+  withdrawn_lte: BigInt
+  withdrawn_in: [BigInt!]
+  withdrawn_not_in: [BigInt!]
+  totalReturnsGenerated: BigInt
+  totalReturnsGenerated_not: BigInt
+  totalReturnsGenerated_gt: BigInt
+  totalReturnsGenerated_lt: BigInt
+  totalReturnsGenerated_gte: BigInt
+  totalReturnsGenerated_lte: BigInt
+  totalReturnsGenerated_in: [BigInt!]
+  totalReturnsGenerated_not_in: [BigInt!]
+  totalReturnsGeneratedUSDC: BigInt
+  totalReturnsGeneratedUSDC_not: BigInt
+  totalReturnsGeneratedUSDC_gt: BigInt
+  totalReturnsGeneratedUSDC_lt: BigInt
+  totalReturnsGeneratedUSDC_gte: BigInt
+  totalReturnsGeneratedUSDC_lte: BigInt
+  totalReturnsGeneratedUSDC_in: [BigInt!]
+  totalReturnsGeneratedUSDC_not_in: [BigInt!]
+  dayReturnsGenerated: BigInt
+  dayReturnsGenerated_not: BigInt
+  dayReturnsGenerated_gt: BigInt
+  dayReturnsGenerated_lt: BigInt
+  dayReturnsGenerated_gte: BigInt
+  dayReturnsGenerated_lte: BigInt
+  dayReturnsGenerated_in: [BigInt!]
+  dayReturnsGenerated_not_in: [BigInt!]
+  dayReturnsGeneratedUSDC: BigInt
+  dayReturnsGeneratedUSDC_not: BigInt
+  dayReturnsGeneratedUSDC_gt: BigInt
+  dayReturnsGeneratedUSDC_lt: BigInt
+  dayReturnsGeneratedUSDC_gte: BigInt
+  dayReturnsGeneratedUSDC_lte: BigInt
+  dayReturnsGeneratedUSDC_in: [BigInt!]
+  dayReturnsGeneratedUSDC_not_in: [BigInt!]
+  tokenPriceUSDC: BigInt
+  tokenPriceUSDC_not: BigInt
+  tokenPriceUSDC_gt: BigInt
+  tokenPriceUSDC_lt: BigInt
+  tokenPriceUSDC_gte: BigInt
+  tokenPriceUSDC_lte: BigInt
+  tokenPriceUSDC_in: [BigInt!]
+  tokenPriceUSDC_not_in: [BigInt!]
+}
+
+enum VaultDayData_orderBy {
+  id
+  timestamp
+  vault
+  pricePerShare
+  deposited
+  withdrawn
+  totalReturnsGenerated
+  totalReturnsGeneratedUSDC
+  dayReturnsGenerated
+  dayReturnsGeneratedUSDC
+  tokenPriceUSDC
+}
+
+type VaultUpdate {
+  """Vault-Transaction-Log"""
+  id: ID!
+
+  """Timestamp of update"""
+  timestamp: BigInt!
+
+  """Block number of update"""
+  blockNumber: BigInt!
+
+  """Ethereum Transaction"""
+  transaction: Transaction!
+
+  """Vault this update is for"""
+  vault: Vault!
+
+  """Sum of tokens deposited"""
+  tokensDeposited: BigInt!
+
+  """Sum of tokens withdrawn"""
+  tokensWithdrawn: BigInt!
+
+  """Sum of Shares minted over all time"""
+  sharesMinted: BigInt!
+
+  """Sum of Shares burnt over all time"""
+  sharesBurnt: BigInt!
+
+  """
+  The current balance position defined as: (vault.totalAssets() * (vault.pricePerShare() / 10**vault.decimals())).
+  """
+  balancePosition: BigInt!
+
+  """Current price per full share"""
+  pricePerShare: BigInt!
+
+  """Returns generated in Tokens"""
+  returnsGenerated: BigInt!
+
+  """Total fees in Shares"""
+  totalFees: BigInt!
+
+  """Management fees in Shares"""
+  managementFees: BigInt!
+
+  """Performance fees in Shares"""
+  performanceFees: BigInt!
+
+  """The address where management fees are paid to"""
+  rewards: Bytes
+}
+
+input VaultUpdate_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+  transaction: String
+  transaction_not: String
+  transaction_gt: String
+  transaction_lt: String
+  transaction_gte: String
+  transaction_lte: String
+  transaction_in: [String!]
+  transaction_not_in: [String!]
+  transaction_contains: String
+  transaction_not_contains: String
+  transaction_starts_with: String
+  transaction_not_starts_with: String
+  transaction_ends_with: String
+  transaction_not_ends_with: String
+  vault: String
+  vault_not: String
+  vault_gt: String
+  vault_lt: String
+  vault_gte: String
+  vault_lte: String
+  vault_in: [String!]
+  vault_not_in: [String!]
+  vault_contains: String
+  vault_not_contains: String
+  vault_starts_with: String
+  vault_not_starts_with: String
+  vault_ends_with: String
+  vault_not_ends_with: String
+  tokensDeposited: BigInt
+  tokensDeposited_not: BigInt
+  tokensDeposited_gt: BigInt
+  tokensDeposited_lt: BigInt
+  tokensDeposited_gte: BigInt
+  tokensDeposited_lte: BigInt
+  tokensDeposited_in: [BigInt!]
+  tokensDeposited_not_in: [BigInt!]
+  tokensWithdrawn: BigInt
+  tokensWithdrawn_not: BigInt
+  tokensWithdrawn_gt: BigInt
+  tokensWithdrawn_lt: BigInt
+  tokensWithdrawn_gte: BigInt
+  tokensWithdrawn_lte: BigInt
+  tokensWithdrawn_in: [BigInt!]
+  tokensWithdrawn_not_in: [BigInt!]
+  sharesMinted: BigInt
+  sharesMinted_not: BigInt
+  sharesMinted_gt: BigInt
+  sharesMinted_lt: BigInt
+  sharesMinted_gte: BigInt
+  sharesMinted_lte: BigInt
+  sharesMinted_in: [BigInt!]
+  sharesMinted_not_in: [BigInt!]
+  sharesBurnt: BigInt
+  sharesBurnt_not: BigInt
+  sharesBurnt_gt: BigInt
+  sharesBurnt_lt: BigInt
+  sharesBurnt_gte: BigInt
+  sharesBurnt_lte: BigInt
+  sharesBurnt_in: [BigInt!]
+  sharesBurnt_not_in: [BigInt!]
+  balancePosition: BigInt
+  balancePosition_not: BigInt
+  balancePosition_gt: BigInt
+  balancePosition_lt: BigInt
+  balancePosition_gte: BigInt
+  balancePosition_lte: BigInt
+  balancePosition_in: [BigInt!]
+  balancePosition_not_in: [BigInt!]
+  pricePerShare: BigInt
+  pricePerShare_not: BigInt
+  pricePerShare_gt: BigInt
+  pricePerShare_lt: BigInt
+  pricePerShare_gte: BigInt
+  pricePerShare_lte: BigInt
+  pricePerShare_in: [BigInt!]
+  pricePerShare_not_in: [BigInt!]
+  returnsGenerated: BigInt
+  returnsGenerated_not: BigInt
+  returnsGenerated_gt: BigInt
+  returnsGenerated_lt: BigInt
+  returnsGenerated_gte: BigInt
+  returnsGenerated_lte: BigInt
+  returnsGenerated_in: [BigInt!]
+  returnsGenerated_not_in: [BigInt!]
+  totalFees: BigInt
+  totalFees_not: BigInt
+  totalFees_gt: BigInt
+  totalFees_lt: BigInt
+  totalFees_gte: BigInt
+  totalFees_lte: BigInt
+  totalFees_in: [BigInt!]
+  totalFees_not_in: [BigInt!]
+  managementFees: BigInt
+  managementFees_not: BigInt
+  managementFees_gt: BigInt
+  managementFees_lt: BigInt
+  managementFees_gte: BigInt
+  managementFees_lte: BigInt
+  managementFees_in: [BigInt!]
+  managementFees_not_in: [BigInt!]
+  performanceFees: BigInt
+  performanceFees_not: BigInt
+  performanceFees_gt: BigInt
+  performanceFees_lt: BigInt
+  performanceFees_gte: BigInt
+  performanceFees_lte: BigInt
+  performanceFees_in: [BigInt!]
+  performanceFees_not_in: [BigInt!]
+  rewards: Bytes
+  rewards_not: Bytes
+  rewards_in: [Bytes!]
+  rewards_not_in: [Bytes!]
+  rewards_contains: Bytes
+  rewards_not_contains: Bytes
+}
+
+enum VaultUpdate_orderBy {
+  id
+  timestamp
+  blockNumber
+  transaction
+  vault
+  tokensDeposited
+  tokensWithdrawn
+  sharesMinted
+  sharesBurnt
+  balancePosition
+  pricePerShare
+  returnsGenerated
+  totalFees
+  managementFees
+  performanceFees
+  rewards
+}
+
+input Vault_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  transaction: String
+  transaction_not: String
+  transaction_gt: String
+  transaction_lt: String
+  transaction_gte: String
+  transaction_lte: String
+  transaction_in: [String!]
+  transaction_not_in: [String!]
+  transaction_contains: String
+  transaction_not_contains: String
+  transaction_starts_with: String
+  transaction_not_starts_with: String
+  transaction_ends_with: String
+  transaction_not_ends_with: String
+  registry: String
+  registry_not: String
+  registry_gt: String
+  registry_lt: String
+  registry_gte: String
+  registry_lte: String
+  registry_in: [String!]
+  registry_not_in: [String!]
+  registry_contains: String
+  registry_not_contains: String
+  registry_starts_with: String
+  registry_not_starts_with: String
+  registry_ends_with: String
+  registry_not_ends_with: String
+  token: String
+  token_not: String
+  token_gt: String
+  token_lt: String
+  token_gte: String
+  token_lte: String
+  token_in: [String!]
+  token_not_in: [String!]
+  token_contains: String
+  token_not_contains: String
+  token_starts_with: String
+  token_not_starts_with: String
+  token_ends_with: String
+  token_not_ends_with: String
+  shareToken: String
+  shareToken_not: String
+  shareToken_gt: String
+  shareToken_lt: String
+  shareToken_gte: String
+  shareToken_lte: String
+  shareToken_in: [String!]
+  shareToken_not_in: [String!]
+  shareToken_contains: String
+  shareToken_not_contains: String
+  shareToken_starts_with: String
+  shareToken_not_starts_with: String
+  shareToken_ends_with: String
+  shareToken_not_ends_with: String
+  classification: VaultClassification
+  classification_not: VaultClassification
+  latestUpdate: String
+  latestUpdate_not: String
+  latestUpdate_gt: String
+  latestUpdate_lt: String
+  latestUpdate_gte: String
+  latestUpdate_lte: String
+  latestUpdate_in: [String!]
+  latestUpdate_not_in: [String!]
+  latestUpdate_contains: String
+  latestUpdate_not_contains: String
+  latestUpdate_starts_with: String
+  latestUpdate_not_starts_with: String
+  latestUpdate_ends_with: String
+  latestUpdate_not_ends_with: String
+  tags: [String!]
+  tags_not: [String!]
+  tags_contains: [String!]
+  tags_not_contains: [String!]
+  balanceTokens: BigInt
+  balanceTokens_not: BigInt
+  balanceTokens_gt: BigInt
+  balanceTokens_lt: BigInt
+  balanceTokens_gte: BigInt
+  balanceTokens_lte: BigInt
+  balanceTokens_in: [BigInt!]
+  balanceTokens_not_in: [BigInt!]
+  balanceTokensIdle: BigInt
+  balanceTokensIdle_not: BigInt
+  balanceTokensIdle_gt: BigInt
+  balanceTokensIdle_lt: BigInt
+  balanceTokensIdle_gte: BigInt
+  balanceTokensIdle_lte: BigInt
+  balanceTokensIdle_in: [BigInt!]
+  balanceTokensIdle_not_in: [BigInt!]
+  balanceTokensInvested: BigInt
+  balanceTokensInvested_not: BigInt
+  balanceTokensInvested_gt: BigInt
+  balanceTokensInvested_lt: BigInt
+  balanceTokensInvested_gte: BigInt
+  balanceTokensInvested_lte: BigInt
+  balanceTokensInvested_in: [BigInt!]
+  balanceTokensInvested_not_in: [BigInt!]
+  tokensDepositLimit: BigInt
+  tokensDepositLimit_not: BigInt
+  tokensDepositLimit_gt: BigInt
+  tokensDepositLimit_lt: BigInt
+  tokensDepositLimit_gte: BigInt
+  tokensDepositLimit_lte: BigInt
+  tokensDepositLimit_in: [BigInt!]
+  tokensDepositLimit_not_in: [BigInt!]
+  sharesSupply: BigInt
+  sharesSupply_not: BigInt
+  sharesSupply_gt: BigInt
+  sharesSupply_lt: BigInt
+  sharesSupply_gte: BigInt
+  sharesSupply_lte: BigInt
+  sharesSupply_in: [BigInt!]
+  sharesSupply_not_in: [BigInt!]
+  managementFeeBps: Int
+  managementFeeBps_not: Int
+  managementFeeBps_gt: Int
+  managementFeeBps_lt: Int
+  managementFeeBps_gte: Int
+  managementFeeBps_lte: Int
+  managementFeeBps_in: [Int!]
+  managementFeeBps_not_in: [Int!]
+  performanceFeeBps: Int
+  performanceFeeBps_not: Int
+  performanceFeeBps_gt: Int
+  performanceFeeBps_lt: Int
+  performanceFeeBps_gte: Int
+  performanceFeeBps_lte: Int
+  performanceFeeBps_in: [Int!]
+  performanceFeeBps_not_in: [Int!]
+  rewards: Bytes
+  rewards_not: Bytes
+  rewards_in: [Bytes!]
+  rewards_not_in: [Bytes!]
+  rewards_contains: Bytes
+  rewards_not_contains: Bytes
+  isTemplateListening: Boolean
+  isTemplateListening_not: Boolean
+  isTemplateListening_in: [Boolean!]
+  isTemplateListening_not_in: [Boolean!]
+  activation: BigInt
+  activation_not: BigInt
+  activation_gt: BigInt
+  activation_lt: BigInt
+  activation_gte: BigInt
+  activation_lte: BigInt
+  activation_in: [BigInt!]
+  activation_not_in: [BigInt!]
+  apiVersion: String
+  apiVersion_not: String
+  apiVersion_gt: String
+  apiVersion_lt: String
+  apiVersion_gte: String
+  apiVersion_lte: String
+  apiVersion_in: [String!]
+  apiVersion_not_in: [String!]
+  apiVersion_contains: String
+  apiVersion_not_contains: String
+  apiVersion_starts_with: String
+  apiVersion_not_starts_with: String
+  apiVersion_ends_with: String
+  apiVersion_not_ends_with: String
+}
+
+enum Vault_orderBy {
+  id
+  transaction
+  registry
+  token
+  shareToken
+  classification
+  latestUpdate
+  vaultDayData
+  historicalUpdates
+  strategies
+  deposits
+  withdrawals
+  transfers
+  tags
+  balanceTokens
+  balanceTokensIdle
+  balanceTokensInvested
+  tokensDepositLimit
+  sharesSupply
+  managementFeeBps
+  performanceFeeBps
+  rewards
+  isTemplateListening
+  activation
+  apiVersion
+}
+
+type Withdrawal {
+  """Transaction-Log"""
+  id: ID!
+
+  """Timestamp of update"""
+  timestamp: BigInt!
+
+  """Block number of update"""
+  blockNumber: BigInt!
+
+  """Account making withdraw"""
+  account: Account!
+
+  """Vault withdrawn from"""
+  vault: Vault!
+
+  """Number of Tokens withdrawn from Vault"""
+  tokenAmount: BigInt!
+
+  """Number of Vault Shares burnt"""
+  sharesBurnt: BigInt!
+
+  """Ethereum Transaction"""
+  transaction: Transaction!
+
+  """Vault Update"""
+  vaultUpdate: VaultUpdate!
+}
+
+input Withdrawal_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+  account: String
+  account_not: String
+  account_gt: String
+  account_lt: String
+  account_gte: String
+  account_lte: String
+  account_in: [String!]
+  account_not_in: [String!]
+  account_contains: String
+  account_not_contains: String
+  account_starts_with: String
+  account_not_starts_with: String
+  account_ends_with: String
+  account_not_ends_with: String
+  vault: String
+  vault_not: String
+  vault_gt: String
+  vault_lt: String
+  vault_gte: String
+  vault_lte: String
+  vault_in: [String!]
+  vault_not_in: [String!]
+  vault_contains: String
+  vault_not_contains: String
+  vault_starts_with: String
+  vault_not_starts_with: String
+  vault_ends_with: String
+  vault_not_ends_with: String
+  tokenAmount: BigInt
+  tokenAmount_not: BigInt
+  tokenAmount_gt: BigInt
+  tokenAmount_lt: BigInt
+  tokenAmount_gte: BigInt
+  tokenAmount_lte: BigInt
+  tokenAmount_in: [BigInt!]
+  tokenAmount_not_in: [BigInt!]
+  sharesBurnt: BigInt
+  sharesBurnt_not: BigInt
+  sharesBurnt_gt: BigInt
+  sharesBurnt_lt: BigInt
+  sharesBurnt_gte: BigInt
+  sharesBurnt_lte: BigInt
+  sharesBurnt_in: [BigInt!]
+  sharesBurnt_not_in: [BigInt!]
+  transaction: String
+  transaction_not: String
+  transaction_gt: String
+  transaction_lt: String
+  transaction_gte: String
+  transaction_lte: String
+  transaction_in: [String!]
+  transaction_not_in: [String!]
+  transaction_contains: String
+  transaction_not_contains: String
+  transaction_starts_with: String
+  transaction_not_starts_with: String
+  transaction_ends_with: String
+  transaction_not_ends_with: String
+  vaultUpdate: String
+  vaultUpdate_not: String
+  vaultUpdate_gt: String
+  vaultUpdate_lt: String
+  vaultUpdate_gte: String
+  vaultUpdate_lte: String
+  vaultUpdate_in: [String!]
+  vaultUpdate_not_in: [String!]
+  vaultUpdate_contains: String
+  vaultUpdate_not_contains: String
+  vaultUpdate_starts_with: String
+  vaultUpdate_not_starts_with: String
+  vaultUpdate_ends_with: String
+  vaultUpdate_not_ends_with: String
+}
+
+enum Withdrawal_orderBy {
+  id
+  timestamp
+  blockNumber
+  account
+  vault
+  tokenAmount
+  sharesBurnt
+  transaction
+  vaultUpdate
+}
+
+type Yearn {
+  id: ID!
+
+  """Only valid after the oracle was deployed at 12242339"""
+  treasuryFeesUsdc: BigInt!
+
+  """Only valid after the oracle was deployed at 12242339"""
+  strategyFeesUsdc: BigInt!
+
+  """Only valid after the oracle was deployed at 12242339"""
+  totalFeesUsdc: BigInt!
+}
+
+input Yearn_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  treasuryFeesUsdc: BigInt
+  treasuryFeesUsdc_not: BigInt
+  treasuryFeesUsdc_gt: BigInt
+  treasuryFeesUsdc_lt: BigInt
+  treasuryFeesUsdc_gte: BigInt
+  treasuryFeesUsdc_lte: BigInt
+  treasuryFeesUsdc_in: [BigInt!]
+  treasuryFeesUsdc_not_in: [BigInt!]
+  strategyFeesUsdc: BigInt
+  strategyFeesUsdc_not: BigInt
+  strategyFeesUsdc_gt: BigInt
+  strategyFeesUsdc_lt: BigInt
+  strategyFeesUsdc_gte: BigInt
+  strategyFeesUsdc_lte: BigInt
+  strategyFeesUsdc_in: [BigInt!]
+  strategyFeesUsdc_not_in: [BigInt!]
+  totalFeesUsdc: BigInt
+  totalFeesUsdc_not: BigInt
+  totalFeesUsdc_gt: BigInt
+  totalFeesUsdc_lt: BigInt
+  totalFeesUsdc_gte: BigInt
+  totalFeesUsdc_lte: BigInt
+  totalFeesUsdc_in: [BigInt!]
+  totalFeesUsdc_not_in: [BigInt!]
+}
+
+enum Yearn_orderBy {
+  id
+  treasuryFeesUsdc
+  strategyFeesUsdc
+  totalFeesUsdc
+}
+
+type _Block_ {
+  """The hash of the block"""
+  hash: Bytes
+
+  """The block number"""
+  number: Int!
+}
+
+"""The type for the top-level _meta field"""
+type _Meta_ {
+  """
+  Information about a specific subgraph block. The hash of the block
+  will be null if the _meta field has a block constraint that asks for
+  a block number. It will be filled if the _meta field has no block constraint
+  and therefore asks for the latest  block
+  
+  """
+  block: _Block_!
+
+  """The deployment ID"""
+  deployment: String!
+
+  """If `true`, the subgraph encountered indexing errors at some past block"""
+  hasIndexingErrors: Boolean!
+}
+
+enum _SubgraphErrorPolicy_ {
+  """Data will be returned even if the subgraph has indexing errors"""
+  allow
+
+  """
+  If the subgraph has indexing errors, data will be omitted. The default.
+  """
+  deny
+}
