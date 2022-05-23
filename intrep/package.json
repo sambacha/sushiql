@@ -1,0 +1,17 @@
+{
+  "name": "intrep",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "sam bacha",
+  "license": "ISC",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "@genql/runtime": "^2.9.0",
+    "graphql": "^16.5.0"
+  }
+}
